@@ -1,0 +1,212 @@
+/*
+ * This file is a part of vModSynth, (c) Rafał Cieślak 2012, 2013
+ */
+
+#include <gtkmm-3.0/gtkmm.h>
+#include "MainWindow.h"
+#include "Engine.h"
+
+MainWindow::MainWindow() :
+                            toolbutton_add(Gtk::Stock::ADD),
+                            toolbutton_edit(Gtk::Stock::EDIT),
+                            toolbutton_left(Gtk::Stock::GO_BACK),
+                            toolbutton_right(Gtk::Stock::GO_FORWARD),
+                            toolbutton_remove(Gtk::Stock::REMOVE),
+                            toolbutton_zoomin(Gtk::Stock::ZOOM_IN),
+                            toolbutton_zoomout(Gtk::Stock::ZOOM_OUT),
+                            adding(false)
+{
+    set_title("vModSynth");
+    set_default_size(900,300);
+    //set_resizable(false);
+
+    main_vbox.pack_start(toolbar,false,false);
+    main_vbox.pack_start(cabinet_add_box,true,true);
+
+    toolbar.append(toolbutton_edit);
+    toolbar.append(toolbutton_sep);
+    toolbar.append(toolbutton_add);
+    toolbar.append(toolbutton_left);
+    toolbar.append(toolbutton_right);
+    toolbar.append(toolbutton_remove);
+    toolbar.append(toolbutton_sep2);
+    toolbar.append(toolbutton_zoomin);
+    toolbar.append(toolbutton_zoomout);
+    toolbutton_add.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_add_clicked));
+    toolbutton_edit.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_edit_clicked));
+    toolbutton_left.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_left_clicked));
+    toolbutton_right.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_right_clicked));
+    toolbutton_remove.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_remove_clicked));
+    toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
+    toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
+
+    //black toolbars in ubuntu
+    Glib::RefPtr<Gtk::StyleContext> sc = toolbar.get_style_context();
+    sc->add_class("primary-toolbar");
+
+    cabinet_add_box.pack_start(modules_list,false,false);
+    cabinet_add_box.pack_start(cabinet_scrolledwindow,true,true);
+    cabinet_scrolledwindow.add(cabinet);
+    cabinet_scrolledwindow.set_policy(Gtk::POLICY_ALWAYS,Gtk::POLICY_NEVER);
+    cabinet_scrolledwindow.set_size_request(-1,MODULE_PANEL_HEIGHT*Engine::get_gui_scale());
+
+    modules_treemodel = Gtk::TreeStore::create(modlist_col);
+    modules_list.set_model(modules_treemodel);
+
+    Gtk::TreeModel::Row row_cat_sources = *(modules_treemodel->append());
+    row_cat_sources[modlist_col.id] = 0;
+    row_cat_sources[modlist_col.fullname] = "Signal sources";
+    Gtk::TreeModel::Row row_cat_signal = *(modules_treemodel->append());
+    row_cat_signal[modlist_col.id] = 0;
+    row_cat_signal[modlist_col.fullname] = "Signal processing";
+    Gtk::TreeModel::Row row_cat_effects = *(modules_treemodel->append());
+    row_cat_effects[modlist_col.id] = 0;
+    row_cat_effects[modlist_col.fullname] = "Effect modules";
+    Gtk::TreeModel::Row row_cat_system = *(modules_treemodel->append());
+    row_cat_system[modlist_col.id] = 0;
+    row_cat_system[modlist_col.fullname] = "System special modules";
+
+    Gtk::TreeModel::Row row;
+    row = *(modules_treemodel->append(row_cat_system.children()));
+    row[modlist_col.id] = 1001;
+    row[modlist_col.fullname] = "Audio output";
+    row = *(modules_treemodel->append(row_cat_system.children()));
+    row[modlist_col.id] = 1005;
+    row[modlist_col.fullname] = "MIDI input";
+    row = *(modules_treemodel->append(row_cat_sources.children()));
+    row[modlist_col.id] = 100;
+    row[modlist_col.fullname] = "Oscilator";
+    row = *(modules_treemodel->append(row_cat_sources.children()));
+    row[modlist_col.id] = 101;
+    row[modlist_col.fullname] = "Noise source";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 210;
+    row[modlist_col.fullname] = "Amplifier";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 230;
+    row[modlist_col.fullname] = "ADSR envelope";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 300;
+    row[modlist_col.fullname] = "Filter";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 400;
+    row[modlist_col.fullname] = "2ch mixer";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 200;
+    row[modlist_col.fullname] = "Multiply";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 201;
+    row[modlist_col.fullname] = "Panorama/Crossfade";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 203;
+    row[modlist_col.fullname] = "Sample and hold";
+    row = *(modules_treemodel->append(row_cat_effects.children()));
+    row[modlist_col.id] = 701;
+    row[modlist_col.fullname] = "Echo";
+    row = *(modules_treemodel->append(row_cat_effects.children()));
+    row[modlist_col.id] = 703;
+    row[modlist_col.fullname] = "Reverb";
+    row = *(modules_treemodel->append(row_cat_effects.children()));
+    row[modlist_col.id] = 702;
+    row[modlist_col.fullname] = "Overdrive";
+
+    //modules_list.append_column("", modlist_col.id);
+    modules_list.append_column("Modules", modlist_col.fullname);
+    modules_list.set_size_request(136,-1);
+
+    modules_list.signal_row_activated().connect(sigc::mem_fun(*this,&MainWindow::on_modlist_item_activated));
+
+    add(main_vbox);
+
+    show_all();
+    modules_list.hide();
+
+    toolbutton_edit.set_active(1);
+}
+
+MainWindow::~MainWindow()
+{
+
+}
+
+bool MainWindow::on_delete_event(GdkEventAny* event){
+    Gtk::Main::quit();
+    return true;
+}
+
+void MainWindow::on_add_clicked(){
+    if(!adding){
+        modules_list.show();
+        adding = true;
+    }else{
+        modules_list.hide();
+        adding = false;
+    }
+}
+
+void MainWindow::on_edit_clicked(){
+    bool e = toolbutton_edit.get_active();
+    if(e){
+        //entering edit mode
+        cabinet.set_edit_mode(true);
+        toolbutton_remove.set_sensitive(true);
+        toolbutton_left.set_sensitive(true);
+        toolbutton_right.set_sensitive(true);
+        toolbutton_add.set_sensitive(true);
+    }else{
+        //leaving edit mode
+        cabinet.set_edit_mode(false);
+        toolbutton_remove.set_sensitive(false);
+        toolbutton_left.set_sensitive(false);
+        toolbutton_right.set_sensitive(false);
+        toolbutton_add.set_sensitive(false);
+    }
+}
+
+void MainWindow::on_left_clicked(){
+    Engine::move_selected_module_left();
+    cabinet.queue_draw();
+}
+
+void MainWindow::on_right_clicked(){
+    Engine::move_selected_module_right();
+    cabinet.queue_draw();
+}
+
+void MainWindow::on_remove_clicked(){
+    Engine::remove_selected_module();
+    cabinet.queue_draw();
+}
+
+void MainWindow::on_zoomin_clicked(){
+    Engine::zoom_in();
+}
+
+void MainWindow::on_zoomout_clicked(){
+    Engine::zoom_out();
+}
+
+
+void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column){
+
+    Gtk::TreeModel::iterator iter = modules_treemodel->get_iter(path);
+    if(iter)
+    {
+        Gtk::TreeModel::Row row = *iter;
+        int id = row[modlist_col.id];
+        if(id != 0){
+            Engine::create_and_append_module(id);
+            modules_list.hide();
+            cabinet.queue_draw();
+            adding = false;
+        }else{
+            Gtk::TreePath path(row);
+            if(modules_list.row_expanded(path)){
+                modules_list.collapse_row(path);
+            }else{
+                modules_list.expand_row(path,false);
+            }
+
+        }
+    }
+}
