@@ -1,0 +1,2721 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\begin_modules
+logicalmkup
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 4cm
+\rightmargin 4cm
+\headsep 2cm
+\secnumdepth 4
+\tocdepth 4
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Author
+Rafał Cieślak
+\end_layout
+
+\begin_layout Title
+vModSynth manual
+\end_layout
+
+\begin_layout Date
+January 27, 2013
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Introduction
+\end_layout
+
+\begin_layout Standard
+Many musicians who work using electronic synthesizers agree that modular
+ synthesizers (often called 
+\emph on
+modulars
+\emph default
+) are the superior instrument in their studio.
+ By allowing it's user to design their own synthesis techniques, modular
+ synthesizers are considered to be limitless, and therefore are popular
+ up to this day, even though majority of synthesizers sold nowadays are
+ not customizable at all, and instead provide the player with either a set
+ of preprogrammed patches and timbres, or a fixed combination of synthesizing
+ units, which forces the user to use only a very limited rage of timbres.
+ A modular synthesizer is a collection of basic units, like an oscillator
+ or a filter, which the user has to connect himself.
+ By carefully designing connection schemes, tuning all module's settings,
+ one is able to create any synthesizing path they want.
+ Some say a modular synthesizer is a 
+\emph on
+synthesizer designing kit
+\emph default
+, which clearly explains their advantage over all-in-one synthesizers.
+\end_layout
+
+\begin_layout Standard
+vModSynth is a piece of software that simulates the behavior of a real,
+ analog modular synthesizer.
+ It's meant to provide it's user with the experience and fun of playing
+ a real machine, and the look and feel of the synthesizers produced by synthesiz
+ers.com, one of world's leading modular synthesizers manufacturer.
+ Therefore all modules currently available in vModSynth are very similar
+ to the ones produced by synthesizers.com - not only from visual side, modules
+ are designed to resemble the behavior of their .com equivalents.
+\end_layout
+
+\begin_layout Standard
+vModSynth is by no means meant to be a powerful and feature-packed software
+ synthesizer.
+ It is also not meant to be easy to use by a newcomer.
+ Using an analog modular synthesizer requires some knowledge in sound synthesis,
+ and therefore such tools are not recommended for beginners.
+ Also, by keeping as close to original as possible, vModSynth has many limitatio
+ns - including monophony - that are not present in most other software synthesiz
+ers.
+\end_layout
+
+\begin_layout Standard
+User that plays with vModSynth should feel the possibilities of a modular
+ synthesizer.
+ They should be able to realize any synthesizer design they may come up
+ with, select modules they require, and freely connect them, routing audio
+ and control signals as they wish.
+ All modules equipped with knobs can have their settings tuned to one's
+ wish, to produce desired effects, modifying the timbre in real time.
+\end_layout
+
+\begin_layout Standard
+vModSynth uses MIDI for its signal input, and therefore is compatible with
+ all MIDI controllers.
+ Having connected a controller to vModSynth, you can play it and the synthesizer
+ will react immediately.
+ Sliders and knobs of a real physical device can be bound to knobs of modules
+ within the virtual modular synthesizer, which means the awesome experience
+ of touching a module's parameter is easily achievable.
+ vModSynth can be also driven by a third-party software sequencer that outputs
+ MIDI signal, like 
+\emph on
+Rosegarden
+\emph default
+, 
+\emph on
+seq24
+\emph default
+ or 
+\emph on
+harmonySEQ
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+User Manual
+\end_layout
+
+\begin_layout Section
+Compiling and running
+\end_layout
+
+\begin_layout Subsection
+Supported platforms
+\end_layout
+
+\begin_layout Standard
+vModSynth works on Linux exclusively.
+ This is because it uses ALSA to communicate directly with the soundcard,
+ it also makes a heavy use of MIDI routing features that are not present
+ on other platforms.
+\end_layout
+
+\begin_layout Standard
+vModSynth was extensively tested on Ubuntu (versions 12.04, 12.10 and 13.04)
+ and UbuntuStudio 12.10, yet it should run on any Linux distribution, as
+ long as it's dependencies are satisfied.
+\end_layout
+
+\begin_layout Standard
+Because vModSynth produces the sound live, minimal latency is desired, and
+ therefore best effects are achieved when run on a 
+\emph on
+realtime
+\emph default
+ or 
+\emph on
+lowlatency kernel
+\emph default
+.
+ It's not a requirement, though.
+\end_layout
+
+\begin_layout Subsection
+Dependencies
+\end_layout
+
+\begin_layout Standard
+To run vModSynth, following libraries have to be installed within the host
+ sytem:
+\end_layout
+
+\begin_layout Description
+gtkmm (version >= 3.5) vModSynth uses GTK to display and manage its graphical
+ user interface, C++ bindings to GTK that are provided by 
+\emph on
+gtkmm
+\emph default
+ are preffered as vModSynth's code uses C++.
+ Although it is not guaranteed the synthesizer will run on any older version
+ of 
+\emph on
+gtkmm
+\emph default
+, it may be possible with litte additional work to compile it with 
+\emph on
+gtkmm
+\emph default
+ 2.4, because no features new to 3.x are used.
+\end_layout
+
+\begin_layout Description
+libcairomm (version >= 1.10) To draw the graphical representation of synthesizer
+ modules, vModSynth uses the C++ bindings to
+\emph on
+ Cairo Graphics 
+\emph default
+library, because its compatible with and recommended by GTK.
+\end_layout
+
+\begin_layout Description
+libasound2 (version >= 1.0.23) vModSynth uses 
+\emph on
+Advanced Linux Sound Architecture
+\emph default
+ to output audio, and react on sound driver's hardware interrupts, as well
+ as to capture MIDI input, both note and control events.
+\end_layout
+
+\begin_layout Standard
+To compile vModSynth, you will also need the development headers for these
+ libraries.
+\end_layout
+
+\begin_layout Standard
+Because vModsynth makes heavy use of C++11 features, a compatible compiler
+ is required.
+ GCC 4.7 is recommended.
+\end_layout
+
+\begin_layout Standard
+For compiling, you may also want to use 
+\emph on
+pkg-config
+\emph default
+, it is required by default build scripts to fetch data about other libraries
+ (including paths to development headers).
+ It is optional, though, and only required to run preprepared build scripts.
+\end_layout
+
+\begin_layout Subsection
+Compiling
+\end_layout
+
+\begin_layout Standard
+vModSynth uses AutoTools to automate compilation.
+ Therefore, the installation procedure is as simple as running:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+./configure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and then:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+make
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can also optionally install vModSynth, by running (as root):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+make install
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Running
+\end_layout
+
+\begin_layout Standard
+At this stage vModSynth should be ready to run.
+ Enter 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+./src/vmodsynth
+\end_layout
+
+\end_inset
+
+ (or 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+vmodsynth
+\end_layout
+
+\end_inset
+
+ if you have installed it) to start the application.
+\end_layout
+
+\begin_layout Standard
+The executable accepts one optional command-line parameter, that can be
+ used to explicitly specify the ALSA device vModSynth should use for PCM
+ output.
+ By default, that's 
+\emph on
+plughw:0,0
+\emph default
+, but it may not work on some setups.
+ Example usage: 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+./vmodsynth hw:0,0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When starting vModSynth, it may emit a message: 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+Failed to open PCM device 'device'.
+\end_layout
+
+\end_inset
+
+ This means some other application is using this PCM device at the moment,
+ and you need to stop it before vModSynth can be granted access to it.
+\end_layout
+
+\begin_layout Section
+Using vModSynth
+\end_layout
+
+\begin_layout Standard
+Typical workflow with vModSynth is likely to look as follows:
+\end_layout
+
+\begin_layout Enumerate
+(optional) Connecting an external MIDI device to vModSynth 
+\emph on
+(This is outside the scope of this manual)
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Adding an initial set of modules.
+\end_layout
+
+\begin_layout Enumerate
+Creating connections between them, which defines how audio signal is routed.
+\end_layout
+
+\begin_layout Enumerate
+Setting knobs and switches on modules on desired position, listening to
+ the outcome.
+\end_layout
+
+\begin_layout Enumerate
+Rearranging modules, removing, and adding new ones.
+\end_layout
+
+\begin_layout Enumerate
+Setting knobs again, possibly binding them to physical sliders on an external
+ device.
+\end_layout
+
+\begin_layout Standard
+Last two steps are usually repeated until the player is happy with the resulting
+ sound.
+\end_layout
+
+\begin_layout Subsection
+Main interface
+\end_layout
+
+\begin_layout Standard
+The main vModSynth's window consists of a toolbar and a large area, where
+ modules are displayed.
+ As you start vModSynth, it should be empty until you add new modules to
+ your setup.
+\end_layout
+
+\begin_layout Subsubsection
+Adding and removing modules
+\end_layout
+
+\begin_layout Standard
+Press the plus (+) icon on the toolbar.
+ You will be presented with a list of available modules, grouped into few
+ categories.
+ Select one of these modules, and double-click it.
+ You will see it appear in the window's main area.
+ Add one more module, it will be aligned to the previous one, just as if
+ you mounted them in a classical wooden cabinet, on a single rack.
+\end_layout
+
+\begin_layout Standard
+By clicking on a module's panel (the gray area that is the main body of
+ a module, or simply any place on a module that is not an inlet/outlet nor
+ a knob) you can select the module.
+ It will have it's borders highlighted in blue, to mark which one is currently
+ selected.
+\end_layout
+
+\begin_layout Standard
+You can remove a selected module by pressing the minus (-) button on the
+ toolbar.
+ You can also rearrange modules order, by moving the selected module one
+ position to left or right, using (<) and (>) buttons respectively.
+\end_layout
+
+\begin_layout Subsubsection
+Managing wires
+\end_layout
+
+\begin_layout Standard
+All modules have some inlets and/or some outlets.
+ Inlets is a socket that excepts an input signal, while outlet is a module's
+ audio output socket.
+ Unlike on a real modular synthesizer, vModSynth helps you distinguish between
+ inlets and outlets - all inlets have a green tint, while outlets have a
+ bit of red color in their hole.
+\end_layout
+
+\begin_layout Standard
+To route audio between modules you need to specify how you want to connect
+ them.
+ There are some limitations to that.
+ First, you cannot connect two outlets together.
+ While this is possible on a real modular synthesizer, this usually makes
+ no sense, and very often leads to hardware damage.
+ Similarly, connecting two inlets together is not quite mindful, it would
+ produce no effect, or - on some rare occasions - odd noises.
+ Therefore connections between inlets to inlets and outlets to outlets are
+ disabled in vModSynth by design.
+\end_layout
+
+\begin_layout Standard
+It is also impossible to connect multiple outlets to a single inlet.
+ This is also reasoned by how real synthesizers work, signals have to be
+ mixed together by a mixer, a multi-connection like such has undefined effects.
+ Connecting one outlet to multiple inlets, however, 
+\emph on
+does make sense
+\emph default
+, but most modular synthesizer studios do not provide branching wires.
+ The .com synthesizers use a 
+\begin_inset Quotes eld
+\end_inset
+
+Multiply
+\begin_inset Quotes erd
+\end_inset
+
+ module instead, which routes it's input to multiple outlets - and same
+ solution is adapted in vModSynth.
+\end_layout
+
+\begin_layout Standard
+To connect a inlet to an outlet with a wire, first click on an outlet (it
+ will be highlighted in blue as selected), then on an inlet.
+ The reverse order will not work.
+ If there is already a wire connected to that inlet from another outlet,
+ it will be removed.
+ If there is already a wire connected from that outlet to another inlet,
+ it will be removed too.
+\end_layout
+
+\begin_layout Standard
+To disconnect a wire, first click the outlet it's connected to, then click
+ on the inlet.
+\end_layout
+
+\begin_layout Standard
+There is an unlimited number of wires you can use.
+ All wires use a random blueish-greenish color to make it easier to identify
+ them.
+\end_layout
+
+\begin_layout Standard
+It is also possible - unlike in many related software (including 
+\emph on
+MAX/MSP
+\emph default
+ studio, 
+\emph on
+puredata
+\emph default
+, 
+\emph on
+AMS
+\emph default
+) to create looped connections.
+ This allows creating feedback-based paths and using other uncommon techniques,
+ just as with a real analog modular synthesizer.
+\end_layout
+
+\begin_layout Subsubsection
+Using knobs and switches
+\end_layout
+
+\begin_layout Standard
+Almost every module has a knob or few.
+ They serve different purposes and modify different parameters, but they
+ share the look and interface.
+\end_layout
+
+\begin_layout Standard
+To move a knob, click and hold on it, then drag the mouse.
+ The knob will update immediately, and will preview you the value it's set
+ to.
+ Movement upwards increases its value, movement downwards lowers it.
+ If you want to fine-tune a knob, move the mouse left-right instead.
+ When you are happy with the value, release the mouse.
+\end_layout
+
+\begin_layout Standard
+Selectors are similar to knobs, buy they have instead a fixed, small number
+ of positions they can be set to.
+ They are controlled exactly the same way as knobs.
+\end_layout
+
+\begin_layout Standard
+To toggle switches, click on them.
+ The result is also applied immediately.
+\end_layout
+
+\begin_layout Paragraph
+Binding knobs to MIDI controllers:
+\end_layout
+
+\begin_layout Standard
+Every single knob or selector can be quickly bound to a MIDI controller,
+ which allows you to drive them by moving a slider or knob on an external
+ MIDI device; external software emitting MIDI control events (like 
+\emph on
+harmonySEQ
+\emph default
+) can be used too.
+\end_layout
+
+\begin_layout Standard
+To bind a knob to MIDI controller, right click on it.
+ A window will appear when you can choose desired channel (use 0 to listen
+ on all channels) and MIDI controller number.
+ Press 
+\begin_inset Quotes eld
+\end_inset
+
+Bind
+\begin_inset Quotes erd
+\end_inset
+
+ to confirm your choise.
+\end_layout
+
+\begin_layout Standard
+To unbind a knob from a MIDI controller, right click on it and press 
+\begin_inset Quotes eld
+\end_inset
+
+Unbind
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Controlling the display
+\end_layout
+
+\begin_layout Standard
+When you are working on a large set of modules, it is likely that it will
+ not fit in window's area.
+ In such case, instead of using the slider in the lower part of the window,
+ you can use mouse wheel to quickly browse your setup.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+zoom-in
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+zoom-out
+\begin_inset Quotes erd
+\end_inset
+
+ buttons on the toolbar can be used to scale the interface.
+ This way you can get a closer look on a knob's value, or get an overview
+ of your path.
+ The same effect can be achieved by scrolling mouse wheel while Control
+ key is held down.
+\end_layout
+
+\begin_layout Subsubsection
+Edit mode
+\end_layout
+
+\begin_layout Standard
+If you are happy with you setup and want to just play with it, you can disable
+ the Edit Mode by toggling the 
+\begin_inset Quotes eld
+\end_inset
+
+Edit
+\begin_inset Quotes erd
+\end_inset
+
+ button on the toolbar, which should feature a pencil-like icon.
+ This will disable all editing features, like adding/removing and rearranging
+ modules and connecting/disconnecting wires, so that you won't mess up things
+ accidentally.
+ Knobs and switches can still be moved.
+ To re-enable Edit Mode, press the toolbar button again.
+\end_layout
+
+\begin_layout Subsection
+Modules
+\end_layout
+
+\begin_layout Standard
+vModSynth comes with a number of different modules you can use for your
+ synthesizers.
+ While most of them are obvious to use for anyone with some knowledge on
+ electronic music, it may be worth to explain how to use some of them.
+\end_layout
+
+\begin_layout Subsubsection
+Oscillator
+\end_layout
+
+\begin_layout Standard
+An oscillator module is the heart of every synthesizer.
+ It provides the base pitch for your timbres, or low frequency sine waves
+ for modulation.
+ vModSynth has a single universal Oscillator module which integrates LFO
+ functions, just like the .com synthesizers.
+\end_layout
+
+\begin_layout Standard
+It outputs 5 different wave shapes simultaneously (sine, triangle, saw,
+ ramp and pulse).
+ You can mix them together with a mixer module for a wide range of new shapes.
+\end_layout
+
+\begin_layout Standard
+You can control the oscillation frequency with the selector and knob at
+ the upper part of the panel.
+ The selector chooses the range of frequency, while the knob finetunes it
+ to any value (logarithmic scale is used).
+ Then selector is in LOW mode, the oscillator functions as a LFO, in such
+ case the frequency knob has the range from about 0.01Hz to 8Hz.
+\end_layout
+
+\begin_layout Standard
+The oscillator module can also function as a VCO.
+ Simply use it's frequency inlets to provide it with signal using 1V/octave
+ standard.
+ If any of these inlets is connected, the manual frequency setting is ignored.
+\end_layout
+
+\begin_layout Standard
+Regardless of whether you control the frequency manually or using a signal,
+ you can apply an exponential and/or linear modifier to it using dedicated
+ inlets.
+ Associated knobs specify how much influence over frequency the incoming
+ signal has.
+ This allows you to easily create a vibrato effect.
+ The amount of exponential multiplier is specified in semitones - for vibrato
+ effect you should set it under 0.2.
+\end_layout
+
+\begin_layout Standard
+You are also free to modify the pulse wave's width using the down-most section.
+ You can either set it manually, or have an external signal control it -
+ the amount knob selects how much influence over this setting the incoming
+ signal has.
+\end_layout
+
+\begin_layout Standard
+The hard sync inlet is useful for synchronizing multiple oscillators, or
+ for resetting it phase when a key is pressed.
+ Any raise of signal on the hard sync inlet will reset the phase of the
+ oscillator.
+\end_layout
+
+\begin_layout Standard
+This oscillator output has voltage range of -5 to 5 V.
+ This does not matter much in case of a software synthesizer, but you may
+ be interested in this value for some uncommon uses.
+\end_layout
+
+\begin_layout Subsubsection
+Noise source
+\end_layout
+
+\begin_layout Standard
+This module works as a source of white and pink noise.
+ It can be then further filtered and/or used to control a variable parameter.
+\end_layout
+
+\begin_layout Subsubsection
+Audio output
+\end_layout
+
+\begin_layout Standard
+This is a special module that routes incoming signal to your system's output.
+ It's useful it you want to hear the resulting sound on your speakers or
+ headphones.
+ By default, you should use the mono output, but stereo output is also provided.
+ If any of the stereo output inlets are connected, the mono signal is ignored.
+\end_layout
+
+\begin_layout Standard
+There is a single knob on this module, it lets you easily scale the incoming
+ signal to change it volume.
+ At 100db the -5to5V signal is scaled to max volume of your soundcard (most
+ likely that will be a -5to5V too).
+\end_layout
+
+\begin_layout Subsubsection
+MIDI input
+\end_layout
+
+\begin_layout Standard
+This is a special module that reacts on MIDI note events.
+ Please keep in mind that modular synthesizers are monophonic by design.
+\end_layout
+
+\begin_layout Standard
+The pith outlets output a 1V/octave signal representing the pith of the
+ most recently pressed key.
+ There two outlets output identical signal, they are two just for convenience.
+\end_layout
+
+\begin_layout Standard
+The gate outlet outputs a high signal if there is any key held down, and
+ a low signal otherwise.
+ It's most commonly connected to an envelope generator.
+\end_layout
+
+\begin_layout Standard
+The velocity outlet outputs a 0to5V value representing the velocity of last
+ MIDI note event.
+\end_layout
+
+\begin_layout Standard
+Connecting MIDI device to vModSynth - which has to be done in order for
+ this module to output any data - depends on your system and is outside
+ of the scope of this manual.
+\end_layout
+
+\begin_layout Subsubsection
+Amplifier
+\end_layout
+
+\begin_layout Standard
+This module attenuates two input signals by a constant value (set with 
+\begin_inset Quotes eld
+\end_inset
+
+initial gain
+\begin_inset Quotes erd
+\end_inset
+
+ knob) or by the value provided by the two control signals (the first of
+ them can be scaled down with the 
+\begin_inset Quotes eld
+\end_inset
+
+control #1 level
+\begin_inset Quotes erd
+\end_inset
+
+ knob).
+ The control signal is usually the MIDI velocity value, or the outcome of
+ an envelope generator.
+ Sometimes a LFO is used for a tremolo effect.
+\end_layout
+
+\begin_layout Standard
+The selector can switch the function that is applied to the control input.
+ It is most useful to select the sharpness of the envelope.
+\end_layout
+
+\begin_layout Standard
+This module has two outlets, one being the inverted version of the other.
+\end_layout
+
+\begin_layout Subsubsection
+ADSR envelope
+\end_layout
+
+\begin_layout Standard
+ADSR envelope generator is a module that generates the contour of a note.
+ You can define the desired shape of generated envelope with four knobs.
+ A gate-like signal is expected at the input, any raise grater than 0.5V
+ triggers attack, and any decrease greater than 0.5V triggers release.
+\end_layout
+
+\begin_layout Subsubsection
+Filter
+\end_layout
+
+\begin_layout Standard
+This is a universal filter module, that can apply low-pass, high-pass and
+ band-pass filtering to a signal.
+ It mixes the two input signals, for convenience.
+ All filters are applied simultaneously, and outputted by three different
+ outlets.
+\end_layout
+
+\begin_layout Standard
+For all filters you can choose the corner frequency by moving the frequency
+ knob (logarithmic scale is used).
+ If the 1V/octave inlet is connected, the main frequency knob is used to
+ scale the frequency 1/4 to 4 times.
+\end_layout
+
+\begin_layout Standard
+You can also use the bandwidth knob, it applies only to the band-pass filter.
+\end_layout
+
+\begin_layout Standard
+There are inlets for multiplying the bandwidth and frequency of the filter.
+ Corresponding knobs specify how much does the incoming signal affect the
+ parameter.
+\end_layout
+
+\begin_layout Subsubsection
+2-channel mixer
+\end_layout
+
+\begin_layout Standard
+The two input channels are scaled according to knob values, and then mixed
+ together.
+ A constant offset can be added too, as set by the third knob.
+\end_layout
+
+\begin_layout Standard
+This module has two outlets, one outputs the inverse of another.
+\end_layout
+
+\begin_layout Subsubsection
+Multiply
+\end_layout
+
+\begin_layout Standard
+This module does not perform any transformation of the sound.
+ It just routes a single signal to multiple outlets.
+ There are three separate multiplying banks, but if you need more branches
+ of a single signal, you can connect these banks together using the two
+ switches between them.
+\end_layout
+
+\begin_layout Subsubsection
+Panorama/Crossfade
+\end_layout
+
+\begin_layout Standard
+vModSynth does the panning and fading in a single module.
+ The upper part of it is responsible for crossfading, you can set the value
+ manually, or toggle the upper switch to have this value controlled by an
+ external signal, plugged it into the middle inlet.
+ The lower part does panning, and similarly - you can either set the panorama
+ value manually, or toggle the lower switch and use an external source to
+ control it.
+\end_layout
+
+\begin_layout Standard
+Because the same external signal can control both panning and fading, this
+ module is useful also for splitting a single signal into two parts, applying
+ different effects on them, and joining them back together.
+\end_layout
+
+\begin_layout Subsubsection
+Sample and hold
+\end_layout
+
+\begin_layout Standard
+This module remembers the value of input signal at a given moment and keeps
+ constantly outputting it to it's outlet.
+ The input level knob attenuates the incoming signal.
+\end_layout
+
+\begin_layout Standard
+You can use your own gate to trigger sampling - just set the switch to 
+\begin_inset Quotes eld
+\end_inset
+
+external
+\begin_inset Quotes erd
+\end_inset
+
+ and plug a wire into the gate inlet.
+ Any rise of this signal greater than 0.5V will sample the input signal.
+\end_layout
+
+\begin_layout Standard
+Alternatively, using the sample and hold module in 
+\begin_inset Quotes eld
+\end_inset
+
+internal
+\begin_inset Quotes erd
+\end_inset
+
+ mode makes use of it's internal LFO to trigger sampling.
+ You can choose it's frequency with the 
+\begin_inset Quotes eld
+\end_inset
+
+sample rate
+\begin_inset Quotes erd
+\end_inset
+
+ knob (logarithmic scale is used).
+\end_layout
+
+\begin_layout Subsubsection
+Echo
+\end_layout
+
+\begin_layout Standard
+Echo module applies a simple echo effect to the passing signal.
+ The two knobs let you specify delay time (50ms to 7s, logarithmic scale)
+ and the amount of feedback.
+\end_layout
+
+\begin_layout Subsubsection
+Reverb
+\end_layout
+
+\begin_layout Standard
+If your synthesizers sound too flat, you may want to add some smooth reverb
+ to make them sound wider and deeper.
+ This artificial reverbator produces a stereo output, which is great for
+ 3d effects - but if you wish a mono reverb, use just the left output.
+\end_layout
+
+\begin_layout Standard
+The first knob that selects the room size decides how deep the reverb is.
+ Small values sound like a basement, larger as a concert hall, while the
+ largest make an impression of a great cathedral.
+\end_layout
+
+\begin_layout Standard
+The dampening knob specifies whether the walls of the room are solid (1)
+ or smooth (0).
+ The greater the value, the slower the reverb will decay.
+ With dampening set to 1, there is no dampening at all, which means the
+ reverb does not decay and stays infinitely long.
+ While this can be used to produce some amazing effects, keep in mind this
+ is not a stable setup, because the signal can reach any values, and will
+ be soon clipped by your soundcard.
+\end_layout
+
+\begin_layout Standard
+The dry/wet knob selects how much of the original (dry) signal should be
+ outputted, and how much signal with effect applied (wet) should be added.
+\end_layout
+
+\begin_layout Subsubsection
+Overdrive
+\end_layout
+
+\begin_layout Standard
+The overdrive module applies the effect of overdriving an analog amplifier.
+ The gain knob scales the input signal, the level knob chooses the volume
+ of resulting sound.
+ The function switch can select the function of overdriving - it can be
+ either a arctangent or a function clipping to -5to5V.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Technical Reference and Implementation Details
+\end_layout
+
+\begin_layout Section
+Technical Overview
+\end_layout
+
+\begin_layout Standard
+vModSynth is an application that runs in real time.
+ As with any other synthesizer, it is essential to compute the sound within
+ minimal time period.
+ This is because the latency should be as little as possible (so that software
+ reaction on use input can be heard immediately), and because any pauses
+ when samples are not delivered to the soundcard result in audible noises.
+\end_layout
+
+\begin_layout Standard
+Another challenge is to maintain the extensibility of the application.
+ Implementing new modules should require minimum work, once all core features
+ are provided by main code parts.
+\end_layout
+
+\begin_layout Standard
+To achieve this, all modules are implemented as separate classes.
+ Most of them consist of just three methods - a constructor for initializing,
+ a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+dsp()
+\end_layout
+
+\end_inset
+
+ method which contains algorithms for calculating a single sample in sequence,
+ and a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw(...)
+\end_layout
+
+\end_inset
+
+ method, which defines how a module's interface should look like.
+ With these features shared among all modules, managing them is much easier.
+\end_layout
+
+\begin_layout Subsection
+Thread management and synchronization
+\end_layout
+
+\begin_layout Standard
+vModSynth runs two separate threads.
+ One of them is responsible for the GUI, it passes control to GTK and reacts
+ on its signals.
+ The other one interacts with ALSA, and waits for hardware interrupts -
+ which happen both when one of PCM's buffers is empty and new samples can
+ be written (in such case DSP routines are called as many times as required
+ to fill the buffer), or when a MIDI event arrives and has to be processed.
+\end_layout
+
+\begin_layout Standard
+Synchronizing these threads is a bit of a challenge.
+ This is because 
+\emph on
+GTKmm
+\emph default
+ is, quoting its documentation: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+not thread-safe, just thread-aware
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Moreover, 
+\emph on
+sigc++
+\emph default
+ library, on which 
+\emph on
+GTKmm 
+\emph default
+depends on is even thread-unsafe, and unwanted crashes are guaranteed when
+ a signal is handled by a different thread than it originated from.
+ Because of that, it gets tricky to ensure proper communication between
+ GUI and audio threads.
+\end_layout
+
+\begin_layout Standard
+Relying on mutexes to lock critical sections would not be enough in such
+ case.
+ While the audio thread is not sleeping, any GTK signal may not be emitted
+ - as that might confuse 
+\emph on
+sigc++
+\emph default
+.
+ This is solved by 
+\emph on
+locking the global GDK lock
+\emph default
+.
+ Whenever audio calculations are taking place, GDK is locked completely,
+ using 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+gdk_threads_enter()
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+gdk_threads_leave()
+\end_layout
+
+\end_inset
+
+ functions.
+ This freezes GUI for the moment where calculations are taking place, but
+ this is far too short period of time to be noticed by the user (and all
+ UI events are scheduled to be processed once the audio routines are finished).
+\end_layout
+
+\begin_layout Standard
+These two functions are marked as deprecated within GDK header files, but
+ the documentation claims they are still working as expected, therefore
+ related compile-time warnings can be safely ignored.
+\end_layout
+
+\begin_layout Standard
+The only case when the audio thread has to trigger GTK events is when a
+ MIDI control message is got and a knob needs to be redrawn, to update it's
+ status.
+ This is achieved with 
+\emph on
+GTKmm
+\emph default
+'s 
+\emph on
+Dispatcher
+\emph default
+ object, which captures such signal, and emits it from the GTK thread, once
+ the global GDK lock is disabled.
+\end_layout
+
+\begin_layout Subsection
+DSP routines
+\end_layout
+
+\begin_layout Standard
+vModSynth does not calculate every sample at the time when it should be
+ emitted.
+ That would use much more CPU power, and would be easily affected by system
+ lag, an audible noise might interfere with synthesized sound.
+ Instead, vModSynth waits until
+\emph on
+ BUFFER_SIZE
+\emph default
+ (defined in 
+\emph on
+AlsaDriver.c
+\emph default
+, default value: 128) samples are ready to be sent to soundcard and scheduled
+ on its own buffer.
+ With the default sample rate of 44100Hz, this means the audio thread wakes
+ up on a hardware interrupt every 
+\begin_inset Formula $\frac{128}{44100}\times1000ms\approx2.9ms$
+\end_inset
+
+.
+ The internal soundcard's buffer is about the same size, and a 1-sample
+ long delay for every connection between modules applies.
+ This results in overall latency of about 6ms, which is absolutely fine
+ for almost any musical usage.
+\end_layout
+
+\begin_layout Standard
+When compiling vModSynth on a 
+\emph on
+realtime kernel
+\emph default
+, one can safely change the buffer size to a smaller power of two (e.g.
+ 32), and get even smaller latencies.
+ I am unsure if that would be beneficial, though.
+\end_layout
+
+\begin_layout Standard
+Once such hardware interrupt is received, the audio thread reacts immediately
+ by calling 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+Engine::do_dsp_cycle()
+\end_layout
+
+\end_inset
+
+ 
+\emph on
+BUFFER_SIZE
+\emph default
+ many times.
+ A single 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+do_dsp_cycle()
+\end_layout
+
+\end_inset
+
+ asks all modules to process 1 single sound sample, therefore calling it
+ 
+\emph on
+BUFFER_SIZE
+\emph default
+ many times results in filling the output buffer (The buffer may stay empty
+ if no Audio Output module is used, but this is desired, this way the applicatio
+n is always synchronized with PCM device).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+Engine::do_dsp_cycle()
+\end_layout
+
+\end_inset
+
+ is therefore the most important function of vModSynth.
+ On the other hand, because of how the code is organized, it is also one
+ of the simplest functions to be found in vModSynth source.
+\end_layout
+
+\begin_layout Standard
+What it does is indeed simple.
+ First it iterates over all wires that are present on current path, and
+ asks them to pass a single sample of data from the outlet they are attached
+ to to the inlet.
+ This data can be then accessed by the module, using 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+Inlet::pull_sample()
+\end_layout
+
+\end_inset
+
+ (and similarly, a module can defer a sample to a wire of it's outlet using
+ 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+Outlet::push_sample(sample)
+\end_layout
+
+\end_inset
+
+).
+ Next, it asks all present modules to perform their own DSP calculations
+ for a single sample.
+ This is done by simply calling module's 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+dsp()
+\end_layout
+
+\end_inset
+
+ function.
+ For example, in case of Noise Source module, this call results in randomizing
+ a new sample an pushing it to outlets.
+ In case of Audio Output module, this results in pulling a sample from it's
+ inlet, and scheduling it on vModSynth's output buffer.
+ All modules define their own calculations for a single sample within the
+ 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+dsp()
+\end_layout
+
+\end_inset
+
+ method.
+\end_layout
+
+\begin_layout Standard
+All calculations within vModSynth are performed on variables whose type
+ is 
+\emph on
+double
+\emph default
+.
+ This ensures enough resolution for maximum output quality.
+\end_layout
+
+\begin_layout Subsection
+User interface
+\end_layout
+
+\begin_layout Standard
+The user interface is build using 
+\emph on
+GTK+/GTKmm
+\emph default
+ and 
+\emph on
+Cairo Graphics library
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Tha main window's structure is very simple - it's just a 
+\emph on
+GtkToolbar
+\emph default
+, a 
+\emph on
+GtkTreeView
+\emph default
+ for displaying module list (when adding one), and a large 
+\emph on
+GtkDrawingArea
+\emph default
+.
+ The window itself is managed as a separate class (
+\emph on
+MainWindow
+\emph default
+) while the main DrawingArea's features are implemented within 
+\emph on
+Cabinet
+\emph default
+ class.
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+MainWindow
+\emph default
+ does little except for setting up the UI and reacting on signals.
+ It defers most calls, such as adding new modules or rearranging them, to
+ functions within 
+\emph on
+Engine
+\emph default
+ namespace.
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+Cabinet
+\emph default
+ class, which inherits from 
+\emph on
+GtkDrawingArea
+\emph default
+, has more custom logic added.
+ It implements handlers for several events.
+ The 
+\emph on
+draw
+\emph default
+ signal is handled by a custom drawing method.
+ It has simple implementation: it iterates through all modules, and uses
+ their own 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw()
+\end_layout
+
+\end_inset
+
+ function to let them add themselves to current Cairo drawing context.
+ Afterwards, it does the same for inlets/outlets, knobs, switches and, lastly,
+ wires.
+ Note that all these objects implement a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw()
+\end_layout
+
+\end_inset
+
+ function, where they define how to draw such element on a Cairo context.
+ It also reacts on mouse button presses, it determines what was clicked,
+ and processed mouse drags, if it was a knob.
+ The 
+\emph on
+Cabinet
+\emph default
+ class also extends 
+\emph on
+DrawingArea
+\emph default
+'s functionality to scrolling detection, so that it can be moved within
+ parent container when the user scrolls the mouse wheel.
+\end_layout
+
+\begin_layout Standard
+Another UI piece is the 
+\emph on
+ControllerWindow
+\emph default
+ class.
+ It represents the dialog window for binding knobs to MIDI controllers.
+\end_layout
+
+\begin_layout Subsection
+Modules
+\end_layout
+
+\begin_layout Standard
+All modules are implemented as separate classes.
+ They all inherit from common 
+\emph on
+Module
+\emph default
+ class.
+ This class implements common properties, a bunch of helper functions, and
+ some virtual functions which are meant to be overdriven by its descendants.
+\end_layout
+
+\begin_layout Standard
+Properties of a module include:
+\end_layout
+
+\begin_layout Description
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+std::vectors
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+of
+\begin_inset space ~
+\end_inset
+
+Inlets
+\begin_inset space ~
+\end_inset
+
+Outlets,
+\begin_inset space ~
+\end_inset
+
+Knobs
+\begin_inset space ~
+\end_inset
+
+and
+\begin_inset space ~
+\end_inset
+
+Switches These store poiners to all GUI elements that this Module makes
+ use of.
+ This makes it easy to access them from within module's methods.
+\end_layout
+
+\begin_layout Description
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_inlet(...), add_outlet(...), ...
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+functions and similar, including 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_knob(...)
+\end_layout
+
+\end_inset
+
+ , 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_selector(...)
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_switch(...)
+\end_layout
+
+\end_inset
+
+.
+ These are helper functions that create a new instance of an Inlet/Outlet/...
+ class, register it in the engine (so that the core system knows that they
+ should be drawn etc.), set its parameters, and add it to corresponding vector.
+\end_layout
+
+\begin_layout Description
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw_*
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+functions are meant to provide a certain drawing functionality, e.g.
+ 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw_background(...)
+\end_layout
+
+\end_inset
+
+ draws the gray panel over a Cairo Context passed as an argument, which
+ stands for the main body of the module.
+\end_layout
+
+\begin_layout Description
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+highlight
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+boolean
+\begin_inset space ~
+\end_inset
+
+variable Determines whether this module is selected and should appear highlighte
+d or not.
+\end_layout
+
+\begin_layout Description
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+xoffset
+\end_layout
+
+\end_inset
+
+ Number of pixels this module has to be drown away from the left border.
+ This value is responsible for proper alignment of a module, as it is applied
+ to all its drawing functions.
+\end_layout
+
+\begin_layout Description
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+is_point_within
+\end_layout
+
+\end_inset
+
+ is used to tell whether a point of given coordinates belongs to the internal
+ area of this module.
+ This is used by the 
+\emph on
+Cabinet
+\emph default
+ to determine which module was clicked.
+\end_layout
+
+\begin_layout Subsubsection
+New module template
+\end_layout
+
+\begin_layout Standard
+A new custom module should implement a constructor, a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+dsp()
+\end_layout
+
+\end_inset
+
+ function, and a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw(...)
+\end_layout
+
+\end_inset
+
+ algorithm.
+\end_layout
+
+\begin_layout Standard
+The constructor would normally initialize internal module values, and add
+ UI elements to the module - for example, using 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_outlet(10,25)
+\end_layout
+
+\end_inset
+
+ creates a new outlet which will be drawn at coordinates 10,25 within this
+ module.
+ N-th outlet can be then accessed using 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+*outlets[N]
+\end_layout
+
+\end_inset
+
+, and this it is usually convenient for the DSP routine to output resulting
+ sample with 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+outlets[N]->push_sample(q);
+\end_layout
+
+\end_inset
+
+.
+ Similarly, a module can use inlets, switches and knobs, so that they are
+ easily accessed by the DSP function (e.g.
+ 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+knobs[5]->get_value();
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+dsp()
+\end_layout
+
+\end_inset
+
+ function is expected to pull one sample from all inlets, process them,
+ generate new output samples, and push one at a time to an outlet.
+ Of course, no expensive unneeded computations should take place within
+ this function, as it will be called very frequently, and small changes
+ can affect CPU usage in a significant manner.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw(cr)
+\end_layout
+
+\end_inset
+
+ function is called with a pointer to a Cairo Context, and it is expected
+ to draw module's content (except for inlets, outlets and other UI elements)
+ onto the context, using methods provided by Cairo.
+\end_layout
+
+\begin_layout Subsection
+UI elements
+\end_layout
+
+\begin_layout Standard
+There is a number of classes that represent a common UI element, and implement
+ it's functionality so that all modules can make use of it.
+\end_layout
+
+\begin_layout Standard
+All UI elements have a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw()
+\end_layout
+
+\end_inset
+
+ function, which implements drawing this particular element onto a Cairo
+ context.
+ Some also implement a 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+redraw()
+\end_layout
+
+\end_inset
+
+ function, which schedules redrawing of the Cabinet, trimming the refreshed
+ area to the area of the UI element (trimming saves time needed to redraw),
+ so that it gets properly redrawn with a new value.
+\end_layout
+
+\begin_layout Subsubsection
+Knob
+\end_layout
+
+\begin_layout Standard
+It represents a value from a given range, with big accuracy.
+ It can be either controlled by dragging - in such case it is driven by
+ the 
+\emph on
+Cabinet
+\emph default
+, or by a MIDI controller.
+ It has a sophisticated drawing algorithm, to resemble knobs of .com synthesizers.
+ It's 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+get_value()
+\end_layout
+
+\end_inset
+
+ returns the current value it's set to, and therefore is commonly used within
+ DSP routines.
+ A knob also remembers the parameters of MIDI controller it's bound to,
+ so that when a MIDI control event is received, simple iteration over all
+ knobs can find the one that should be moved.
+\end_layout
+
+\begin_layout Paragraph
+Selector
+\end_layout
+
+\begin_layout Standard
+It works almost like a knob, yet it has a fixed number of positions.
+ Therefore it inherit most functions from a 
+\emph on
+Knob
+\emph default
+, but always casts it's internal value to an integer number, and has a different
+ drawing routine.
+\end_layout
+
+\begin_layout Subsubsection
+Switches
+\end_layout
+
+\begin_layout Standard
+Similar in use to 
+\emph on
+Knobs
+\emph default
+ and 
+\emph on
+Selectors
+\emph default
+, this UI element is used when a binary toggle is needed.
+ 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+get_value()
+\end_layout
+
+\end_inset
+
+ returns a boolean variable.
+\end_layout
+
+\begin_layout Subsubsection
+Inlet/Outlet
+\end_layout
+
+\begin_layout Standard
+These classes implement a basic functionality of an 
+\emph on
+Inlet
+\emph default
+/
+\emph on
+Outlet
+\emph default
+.
+ Such element stores the pointer to the wire that is plugged into it (NULL
+ if there is no connection).
+ They can also 
+\emph on
+pull
+\emph default
+/
+\emph on
+push
+\emph default
+ a sample, which represents fetching it from / passing it to the connected
+ wire.
+\end_layout
+
+\begin_layout Subsubsection
+Wires
+\end_layout
+
+\begin_layout Standard
+These are created when a connection is defined.
+ They always remember their associated 
+\emph on
+Inlet
+\emph default
+ and 
+\emph on
+Outlet
+\emph default
+.
+ A 
+\emph on
+Wire
+\emph default
+ also remembers the samples that are passing through it, and can pass the
+ data from corresponding inlet to outlet with 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+pass_sample()
+\end_layout
+
+\end_inset
+
+, which is crucial for synchronizing wires with modules (see 
+\series bold
+\emph on
+DSP routines 
+\series default
+\emph default
+for more information).
+\end_layout
+
+\begin_layout Section
+Code Units
+\end_layout
+
+\begin_layout Standard
+The source code is divided into a number of files.
+\end_layout
+
+\begin_layout Subsection
+Main files
+\end_layout
+
+\begin_layout Subsubsection
+main.cpp
+\end_layout
+
+\begin_layout Standard
+This file contains the 
+\emph on
+main()
+\emph default
+ function of the program.
+ It initializes GTK, starts the audio thread, processes command-line arguments
+ and constructs a new instance of a 
+\emph on
+MainWindow
+\emph default
+ to be displayed as the application launches.
+ Global variable 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+quit_threads
+\end_layout
+
+\end_inset
+
+ is used to notify the audio thread that it should now exit gracefully,
+ after the application is closed.
+\end_layout
+
+\begin_layout Subsubsection
+AlsaDriver{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+These files implement all audio output and MIDI input features.
+ 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+thread_main()
+\end_layout
+
+\end_inset
+
+ is where the audio thread starts execution.
+ It initializes both PCM and ALSA SEQ interfaces to interact with ALSA.
+ The thread sleeps looped waiting for hardware interrupts, and recognizes
+ them.
+ If this interrupt was caused by an incoming MIDI note, 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+midi_input()
+\end_layout
+
+\end_inset
+
+ is called.
+ If it was caused by an empty ALSA buffer being ready to be refilled, 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+playback()
+\end_layout
+
+\end_inset
+
+ gets run.
+\end_layout
+
+\begin_layout Standard
+Global variables 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+last_note_pitch
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+last_note_velocity
+\end_layout
+
+\end_inset
+
+ represent a table of channels, and are used to remember what was the last
+ note event that appeared on that particular channel (0 represents all channels).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+playback()
+\end_layout
+
+\end_inset
+
+ runs DSP routines to produce required number of samples.
+ It is expected that while this function runs, 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+sound_buffer
+\end_layout
+
+\end_inset
+
+ will be filled in, which is done by e.g.
+ the Audio Output module - it calls 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_sample(l,r)
+\end_layout
+
+\end_inset
+
+ which stores given stereo samples onto the currently calculated position
+ in the 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+sound_buffer
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+get_last_note_*
+\end_layout
+
+\end_inset
+
+ are convenient functions (used by MIDI input module) which return the data
+ of the most recently received MIDI note.
+\end_layout
+
+\begin_layout Subsubsection
+Engine{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+All functions within these files are encapsulated in 
+\emph on
+Engine
+\emph default
+ namespace, for clarity.
+ There is a number of functions there, and they serve different purposes,
+ yet they are are a part of application's core.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+do_dsp_cycle()
+\end_layout
+
+\end_inset
+
+ function is used to synchronously compute one sample in by all modules.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+[un]register_*()
+\end_layout
+
+\end_inset
+
+ functions are used to add or remove a UI element to the global list of
+ all present knobs/inlets/etc.
+ This way the 
+\emph on
+Cabinet 
+\emph default
+knows what to draw.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+[un]select_*()
+\end_layout
+
+\end_inset
+
+ functions are used to mark items as selected (highlight them).
+ Also, it recognizes the sequence of connections, and 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+[un]connects()
+\end_layout
+
+\end_inset
+
+ inlets and outlets (which creates/destroys a new instance of 
+\emph on
+Wire
+\emph default
+) together.
+ There is also an 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+unselect()
+\end_layout
+
+\end_inset
+
+ function, which is called to reset selection.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+move_selected_module_*()
+\end_layout
+
+\end_inset
+
+ are used to rearrange modules.
+ These functions swap adjacent modules by changing their 
+\emph on
+xoffset
+\emph default
+ property.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+create_and_append_module(ID) remove_module(pointer) and remove_selected_module()
+\end_layout
+
+\end_inset
+
+ are responsible for creating new instances of desired modules, and for
+ gracefully removing them.
+\end_layout
+
+\begin_layout Standard
+There are also 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+zoom_in/zoom_out()
+\end_layout
+
+\end_inset
+
+ functions that are used to scale the GUI.
+ 
+\emph on
+Cabinet
+\emph default
+ respects the GUI scale when performing it's drawings and click detections.
+\end_layout
+
+\begin_layout Subsubsection
+MainWindow{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+These files contain the implementation of 
+\emph on
+MainWindow
+\emph default
+ class, which represents the main GUI piece (see: 
+\series bold
+\emph on
+User Interface
+\series default
+\emph default
+).
+\end_layout
+
+\begin_layout Subsubsection
+Cabinet{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Cabinet
+\emph default
+ class, which inherits after 
+\emph on
+GtkDrawingArea
+\emph default
+, is the main element of the UI interface, and is used to fill the are of
+ the 
+\emph on
+MainWindow
+\emph default
+.
+ It has custom drawing algorithms that are responsible for displaying the
+ modules, wires, etc.
+ (see: 
+\series bold
+\emph on
+User Interface
+\series default
+\emph default
+)
+\end_layout
+
+\begin_layout Subsubsection
+ControllerWindow{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+ControllerWindow
+\emph default
+ class is just a 
+\emph on
+GtkDialog
+\emph default
+ with some custom widgets.
+ It is used to choose the MIDI controller/channel and is displayed after
+ right-clicking a knob.
+\end_layout
+
+\begin_layout Subsubsection
+Module{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+This is where the main 
+\emph on
+Module 
+\emph default
+class is implemented.
+ All particular modules inherit from this class.
+ Both 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+draw(...)
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+dsp()
+\end_layout
+
+\end_inset
+
+ are pure virtual functions, and therefore no instances of 
+\emph on
+Module
+\emph default
+ itself can be constructed.
+ More details about 
+\emph on
+Module
+\emph default
+ class can be found in 
+\series bold
+\emph on
+Modules
+\series default
+\emph default
+ section.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+
+\series bold
+ModuleList{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+The purpose of this file is to define the 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+ModuleList
+\end_layout
+
+\end_inset
+
+ 
+\emph on
+enum
+\emph default
+, and implement 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+create_new_module_from_ID
+\end_layout
+
+\end_inset
+
+ which constructs a new module and returns a pointer to it.
+ This way 
+\emph on
+ModuleList.cpp 
+\emph default
+is the only file that 
+\emph on
+#includes
+\emph default
+ files from the 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+./modules
+\end_layout
+
+\end_inset
+
+ directory, and all the rest of code is fine using the 
+\emph on
+Module
+\emph default
+ prototype class.
+\end_layout
+
+\begin_layout Subsubsection
+Outlet{.cpp,.h}, Inlet{.cpp,.h}, Knob{.cpp,.h}, Selector{.cpp,.h}, Switch{.cpp,.h},
+ Wire{.cpp,.h}
+\end_layout
+
+\begin_layout Standard
+These files implement the UI elements, as described in the 
+\series bold
+\emph on
+UI elements
+\series default
+\emph default
+ section.
+ Please note that a 
+\emph on
+Selector 
+\emph default
+inherits from a 
+\emph on
+Knob
+\emph default
+, since in fact they do share most logic.
+\end_layout
+
+\begin_layout Subsection
+Module files
+\end_layout
+
+\begin_layout Standard
+These reside in ./modules directory.
+ Except for 
+\emph on
+algorithms{.cpp,.h}
+\emph default
+ (which contains DSP algorithms that are shared by many modules), all these
+ files implement a single class, which represents a certain module.
+ Only a few of them require some explanations:
+\end_layout
+
+\begin_layout Subparagraph
+v1001: Audio Output
+\end_layout
+
+\begin_layout Standard
+It uses 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+add_sample(l,r)
+\end_layout
+
+\end_inset
+
+ from 
+\emph on
+AlsaDriver
+\emph default
+ to store samples on vModSynth's output buffer.
+\end_layout
+
+\begin_layout Subparagraph
+v1005: MIDI input
+\end_layout
+
+\begin_layout Standard
+It uses 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+get_last_note_pitch(channel), get_last_note_velocity(channel)
+\end_layout
+
+\end_inset
+
+ from 
+\emph on
+AlsaDriver
+\emph default
+ to get information about most recent MIDI note event.
+\end_layout
+
+\begin_layout Subparagraph
+v101: Noise source
+\end_layout
+
+\begin_layout Standard
+The pink noise is the same white noise, yet filtered out.
+ Filter parameters were originally designed by Paul Kellet.
+\end_layout
+
+\begin_layout Subparagraph
+v230: ADSR envelope generator
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+phase
+\end_layout
+
+\end_inset
+
+ value represents the stage of envelope that is currently being outputted.
+ 0 - no envelope, 1 - attack, 2 - decay, 3 - sustain, 4 - release.
+\end_layout
+
+\begin_layout Subparagraph
+v300: Filter
+\end_layout
+
+\begin_layout Standard
+This module features a one-pole low-pass filter, a one-pole one-zero high-pass
+ filer, and a two-pole band-pass filter.
+ The filtering algorithms were designed with help of 
+\emph on
+The Theory and Technique of Electronic Music
+\emph default
+ by Miller Puckette.
+\end_layout
+
+\begin_layout Subparagraph
+v703: Reverb
+\end_layout
+
+\begin_layout Standard
+This reverb design consists of three sequential quick-echoes, and four-channel
+ looped reverbator body.
+\end_layout
+
+\begin_layout Section
+Tests
+\end_layout
+
+\begin_layout Standard
+Testing vModSynth requires precision as it is not just correctness that
+ is tested.
+ A software synthesizer needs to use as little computing power as possible,
+ and should never hog the host system unnecessarily.
+ The reaction on input should be as quick as possible, and there should
+ be no audible quirks or noises.
+\end_layout
+
+\begin_layout Standard
+vModSynth was extensively tested on three different machines with different
+ hardware specifications.
+ Operating systems involved include 
+\emph on
+Ubuntu 
+\emph default
+12.04, 12.10 and 13.10 development builds, as well as 
+\emph on
+UbuntuStudio
+\emph default
+ 12.10 with a 
+\emph on
+low-latency 
+\emph default
+kernel.
+ The tests were taking place during development, to identify bugs related
+ to new features as soon as possible, and a major testing was done once
+ everything was mostly ready to be released, to ensure stability of the
+ overall product.
+\end_layout
+
+\begin_layout Standard
+GUI tests included using the UI elements in unusual manner, interfering
+ the UI with third-party applications, steering the knobs and modules to
+ reach corner values.
+ Repeated addition and removal of random modules in huge quantities, maintaining
+ huge number of connections, proper reordering of great number of different
+ modules.
+ Binding a big number of knobs to controllers, steering them all simultaneously
+ (including MIDI controllers manual mouse movement).
+\end_layout
+
+\begin_layout Standard
+All modules have undergone heavy correctness tests, which were performed
+ by recording the resulting soundwave (which was captured by a virtual soundcard
+), and manual analysis of outputted samples.
+ Most modules were also tested for corner cases, if appropriate (e.g.
+ peak frequency gain for band-pass filter, constant signal as an input to
+ a reverbator).
+ The only minor issues that were found are caused by sampling resolution,
+ which can be excused because of digital sound synthesis nature, and are
+ by no means audible to humans.
+\end_layout
+
+\begin_layout Standard
+Endurance tests (setups running constantly for several hours, or repeated
+ addition and removal of connections/modules, or long-term parameter change)
+ were also performed, and no problems were found.
+\end_layout
+
+\begin_layout Standard
+During most of these tests, CPU usage of all threads was measured with third-par
+ty tools.
+ Depending on hardware specs used, vModSynth can eat up a big deal of CPU
+ when a very complex path is designed, but it never reaches critical values.
+ Comparing to other established synthesizer software, vModSynth is not outstandi
+ng in terms of performance, but it does not use significantly more resources.
+\end_layout
+
+\begin_layout Standard
+MIDI tests involved playing vModSynth with a external MIDI keyboard, connecting
+ a software sequencer (
+\emph on
+Rosegarden
+\emph default
+, 
+\emph on
+harmonySEQ
+\emph default
+) to vModSynth, and also manually applying corner cases, by sending fake,
+ incorrect MIDI messages to vModSynth.
+\end_layout
+
+\begin_layout Standard
+Along the explained above tests, I have spend a significant amount of time
+ testing vModSynth in a
+\emph on
+ real usage case
+\emph default
+ - as a fan of modular synthesizers it was a great pleasure to me to spend
+ a long time with it, designing synthesizers and playing them on my external
+ keyboard.
+ This was also useful for finding issues which might have been found only
+ by trying to be productive while using this piece of software (including
+ inconsistent UI, unexpected or illogical module behavior).
+\end_layout
+
+\end_body
+\end_document
