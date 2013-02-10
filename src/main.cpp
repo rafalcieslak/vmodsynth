@@ -12,7 +12,7 @@ MainWindow *mainwindow;
 
 bool quit_threads = false;
 
-char device[100] = "plughw:0,0";
+char device[100] = "default";
 
 void audio_thread_func(){
     AlsaDriver::thread_main(device);

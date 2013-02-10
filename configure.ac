@@ -1,7 +1,8 @@
 AC_INIT([vmodsynth],[1.0])
 AM_INIT_AUTOMAKE([foreign -Wall])
 
-AC_PROG_CXX
+AC_LANG([C++])
+CXXFLAGS="$CXXFLAGS -std=c++0x"
 
 AC_CHECK_LIB([asound], [snd_seq_open], [] , [
 					echo "Alsa library missing - install alsa developement headers! [libasound2-dev on Ubuntu]"

@@ -42,7 +42,7 @@ void open_pcm(char *pcm) {
     pcm_handle = NULL;
 
     if (snd_pcm_open(&pcm_handle,pcm,SND_PCM_STREAM_PLAYBACK,0) < 0){
-        std::cout << "Failed to open PCM device '" << pcm << "'.\n";
+        std::cout << "Failed to open PCM device '" << pcm << "'. Either the device is busy and you need to close other application using it, or try launching the application with different device as a command-line argument, e.g. 'vmodsynth hw:0,0'.\n";
         return;
     }
     snd_pcm_hw_params_t *hwp;
