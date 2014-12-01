@@ -9,6 +9,7 @@ To compile it, you will also need the developement headers of these libraries.
 
 To compile:
 
+    automake --add-missing
     autoreconf
     ./configure
     make
@@ -19,9 +20,9 @@ To install (as root):
 
 To run:
 
-    vModSynth
+    vmodsynth
 
-(or `./src/vModSynth` if you didn't install it).
+(or `./src/vmodsynth` if you didn't install it).
 
 For detailed documentation, please refer to manual provided within the `./doc` directory.
 
