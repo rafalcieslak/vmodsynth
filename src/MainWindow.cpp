@@ -172,6 +172,8 @@ void MainWindow::on_edit_clicked(){
     }else{
         //leaving edit mode
         cabinet.set_edit_mode(false);
+        modules_list.hide();
+        adding = false;
         toolbutton_remove.set_sensitive(false);
         toolbutton_left.set_sensitive(false);
         toolbutton_right.set_sensitive(false);
