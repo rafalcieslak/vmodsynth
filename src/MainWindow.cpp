@@ -225,9 +225,7 @@ void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk
         int id = row[modlist_col.id];
         if(id != 0){
             Engine::create_and_append_module(id);
-            modules_list.hide();
             cabinet.queue_draw();
-            adding = false;
         }else{
             Gtk::TreePath path(row);
             if(modules_list.row_expanded(path)){
