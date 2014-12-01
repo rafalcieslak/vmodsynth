@@ -140,6 +140,7 @@ MainWindow::MainWindow() :
     //modules_list.append_column("", modlist_col.id);
     modules_list.append_column("Modules", modlist_col.fullname);
     modules_list.set_size_request(136,-1);
+    modules_list.expand_all();
 
     modules_list.signal_row_activated().connect(sigc::mem_fun(*this,&MainWindow::on_modlist_item_activated));
 
