@@ -80,7 +80,7 @@ MainWindow::MainWindow() :
     row_cat_effects[modlist_col.fullname] = "Effect modules";
     Gtk::TreeModel::Row row_cat_system = *(modules_treemodel->append());
     row_cat_system[modlist_col.id] = 0;
-    row_cat_system[modlist_col.fullname] = "System special modules";
+    row_cat_system[modlist_col.fullname] = "System modules";
 
     Gtk::TreeModel::Row row;
     row = *(modules_treemodel->append(row_cat_system.children()));
@@ -91,7 +91,7 @@ MainWindow::MainWindow() :
     row[modlist_col.fullname] = "MIDI input";
     row = *(modules_treemodel->append(row_cat_sources.children()));
     row[modlist_col.id] = 100;
-    row[modlist_col.fullname] = "Oscilator";
+    row[modlist_col.fullname] = "Oscillator";
     row = *(modules_treemodel->append(row_cat_sources.children()));
     row[modlist_col.id] = 101;
     row[modlist_col.fullname] = "Noise source";
