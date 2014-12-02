@@ -18,3 +18,4 @@ vmodsynth_SOURCES = AlsaDriver.cpp \
 
 vmodsynth_CPPFLAGS = $(GTKMM_CFLAGS) -O3
 vmodsynth_LDADD = $(GTKMM_LIBS) $(CAIROMM_LIBS) -lasound
+vmodsynth_LDFLAGS = -pthread
