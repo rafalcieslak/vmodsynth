@@ -8,23 +8,21 @@ To run vModSynth you need to have gtkmm-3.0 and ALSA run-time libriries installe
 To compile it, you will also need the developement headers of these libraries.
 
 To compile:
-<pre>
-	autoreconf
-	./configure
-	make
-</pre>	
+
+    automake --add-missing
+    autoreconf
+    ./configure
+    make
 
 To install (as root):
-<pre>
-	make install
-</pre>
-	
+
+    make install
+
 To run:
-<pre>
-	vModSynth
-</pre>
-	
-(or `src/vModSynth` if you didn't install it).
+
+    vmodsynth
+
+(or `./src/vmodsynth` if you didn't install it).
 
 For detailed documentation, please refer to manual provided within the `./doc` directory.
 
