@@ -1,5 +1,5 @@
 AC_INIT([vmodsynth],[1.0])
-AM_INIT_AUTOMAKE([foreign -Wall])
+AM_INIT_AUTOMAKE([foreign subdir-objects -Wall])
 
 AC_LANG([C++])
 CXXFLAGS="$CXXFLAGS -std=c++0x"
