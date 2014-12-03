@@ -9,6 +9,7 @@ To compile it, you will also need the developement headers of these libraries.
 
 To compile:
 
+    aclocal
     automake --add-missing
     autoreconf
     ./configure
