@@ -7,3 +7,4 @@ depcomp
 install-sh
 missing
 src/Makefile.in
+configure
