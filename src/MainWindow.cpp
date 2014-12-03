@@ -48,6 +48,10 @@ MainWindow::MainWindow() :
     toolbar.append(toolbutton_sep2);
     toolbar.append(toolbutton_zoomin);
     toolbar.append(toolbutton_zoomout);
+
+    Glib::RefPtr<Gtk::AccelGroup> accel_group = Gtk::AccelGroup::create();
+    add_accel_group(accel_group);
+
     toolbutton_add.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_add_clicked));
     toolbutton_edit.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_edit_clicked));
     toolbutton_left.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_left_clicked));
@@ -55,6 +59,13 @@ MainWindow::MainWindow() :
     toolbutton_remove.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_remove_clicked));
     toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
     toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
+
+    toolbutton_add.add_accelerator("clicked", accel_group, GDK_KEY_plus, (Gdk::ModifierType) 0, (Gtk::AccelFlags) 0);
+    toolbutton_left.add_accelerator("clicked", accel_group, GDK_KEY_Left, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+    toolbutton_right.add_accelerator("clicked", accel_group, GDK_KEY_Right, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+    toolbutton_remove.add_accelerator("clicked", accel_group, GDK_KEY_Delete, (Gdk::ModifierType) 0, (Gtk::AccelFlags) 0);
+    toolbutton_zoomin.add_accelerator("clicked", accel_group, GDK_KEY_plus, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+    toolbutton_zoomout.add_accelerator("clicked", accel_group, GDK_KEY_minus, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
     //black toolbars in ubuntu
     Glib::RefPtr<Gtk::StyleContext> sc = toolbar.get_style_context();
@@ -129,6 +140,7 @@ MainWindow::MainWindow() :
     //modules_list.append_column("", modlist_col.id);
     modules_list.append_column("Modules", modlist_col.fullname);
     modules_list.set_size_request(136,-1);
+    modules_list.expand_all();
 
     modules_list.signal_row_activated().connect(sigc::mem_fun(*this,&MainWindow::on_modlist_item_activated));
 
@@ -172,6 +184,8 @@ void MainWindow::on_edit_clicked(){
     }else{
         //leaving edit mode
         cabinet.set_edit_mode(false);
+        modules_list.hide();
+        adding = false;
         toolbutton_remove.set_sensitive(false);
         toolbutton_left.set_sensitive(false);
         toolbutton_right.set_sensitive(false);
@@ -212,9 +226,7 @@ void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk
         int id = row[modlist_col.id];
         if(id != 0){
             Engine::create_and_append_module(id);
-            modules_list.hide();
             cabinet.queue_draw();
-            adding = false;
         }else{
             Gtk::TreePath path(row);
             if(modules_list.row_expanded(path)){

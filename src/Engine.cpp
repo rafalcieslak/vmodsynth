@@ -71,6 +71,7 @@ void remove_module(Module* m){
 }
 void remove_selected_module(){
     remove_module(selected_module);
+    selected_module = NULL;
 }
 
 void swap_modules(std::vector<Module*>::iterator m1,std::vector<Module*>::iterator m2){
