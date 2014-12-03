@@ -17,8 +17,11 @@ missing
 src/.deps/
 src/modules/.deps/
 stamp-h1
+*.dirstamp
 
 configure
 Makefile
 src/Makefile
 
+*.o
+src/vmodsynth
