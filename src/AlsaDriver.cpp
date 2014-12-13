@@ -83,7 +83,7 @@ void open_pcm(char *pcm) {
 }
 
 const short short_max = ((int)2<<14) - (int)1;
-const short short_min = ((int)2<<14) + (int)1;
+//const short short_min = ((int)2<<14) + (int)1;
 
 void add_sample(double l, double r){
     if(buf_ptr >= 2*BUFFER_SIZE) return;
