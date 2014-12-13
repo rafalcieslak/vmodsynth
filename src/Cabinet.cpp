@@ -218,7 +218,7 @@ bool Cabinet::on_button_release_event(GdkEventButton *){
 }
 
 bool Cabinet::on_scroll_event(GdkEventScroll * event){
-    double scale = Engine::get_gui_scale();
+    //double scale = Engine::get_gui_scale();
     //double x = event->x / scale;
     //double y = event->y / scale;
 

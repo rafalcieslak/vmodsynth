@@ -66,31 +66,31 @@ bool Module::is_point_within(double x, double){
     return (x >= xoffset && x <= xoffset + panel_width);
 }
 
-int Module::add_inlet(int x, int y){
+void Module::add_inlet(int x, int y){
     Inlet* newinlet = new Inlet(this,x,y);
     inlets.push_back(newinlet);
     Engine::register_inlet(newinlet);
 }
 
-int Module::add_outlet(int x, int y){
+void Module::add_outlet(int x, int y){
     Outlet* newoutlet = new Outlet(this,x,y);
     outlets.push_back(newoutlet);
     Engine::register_outlet(newoutlet);
 }
 
-int Module::add_knob(int x, int y, double _min, double _value, double _max, int steps){
+void Module::add_knob(int x, int y, double _min, double _value, double _max, int steps){
     Knob* newknob = new Knob(this,x,y,_min,_value,_max,steps);
     knobs.push_back(newknob);
     Engine::register_knob(newknob);
 }
 
-int Module::add_selector(int x, int y, int vals, int def, bool hide){
+void Module::add_selector(int x, int y, int vals, int def, bool hide){
     Selector* newknob = new Selector(this,x,y,vals,def,hide);
     knobs.push_back(newknob);
     Engine::register_knob(newknob);
 }
 
-int Module::add_switch(int x, int y, std::string text1, std::string text2, bool vertical, bool val){
+void Module::add_switch(int x, int y, std::string text1, std::string text2, bool vertical, bool val){
     Switch* newswitch = new Switch(this,x,y,text1,text2,vertical,val);
     switches.push_back(newswitch);
     Engine::register_switch(newswitch);

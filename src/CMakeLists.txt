@@ -10,7 +10,7 @@ add_definitions(
 	-Wall
 	-Wextra
 #	-Werror
-	-O3
+	-g
 )
 
 link_directories(

@@ -57,11 +57,11 @@ class Module
 
         bool highlight;
     protected:
-        int add_inlet(int x, int y);
-        int add_outlet(int x, int y);
-        int add_knob(int x, int y, double _min, double _value, double _max, int steps = 0);
-        int add_selector(int x, int y, int vals, int def, bool hide = true);
-        int add_switch(int x, int y, std::string text1 = "OFF", std::string text2 = "ON", bool vertival = false, bool val = false);
+        void add_inlet(int x, int y);
+        void add_outlet(int x, int y);
+        void add_knob(int x, int y, double _min, double _value, double _max, int steps = 0);
+        void add_selector(int x, int y, int vals, int def, bool hide = true);
+        void add_switch(int x, int y, std::string text1 = "OFF", std::string text2 = "ON", bool vertival = false, bool val = false);
 
         //Drawing helper functions
         void draw_background(const Cairo::RefPtr<Cairo::Context>& cr, double grayness);
