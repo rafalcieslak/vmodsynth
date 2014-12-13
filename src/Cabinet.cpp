@@ -209,7 +209,7 @@ bool Cabinet::on_button_press_event(GdkEventButton * event){
     return false;
 }
 
-bool Cabinet::on_button_release_event(GdkEventButton * event){
+bool Cabinet::on_button_release_event(GdkEventButton *){
     if(dragged_knob){
         dragged_knob->movement_end();
         dragged_knob = NULL;
@@ -219,8 +219,8 @@ bool Cabinet::on_button_release_event(GdkEventButton * event){
 
 bool Cabinet::on_scroll_event(GdkEventScroll * event){
     double scale = Engine::get_gui_scale();
-    double x = event->x / scale;
-    double y = event->y / scale;
+    //double x = event->x / scale;
+    //double y = event->y / scale;
 
     if (event->state & Gdk::ModifierType::CONTROL_MASK){
         //controll key is held, thus react by zooming

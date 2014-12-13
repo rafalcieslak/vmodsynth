@@ -157,7 +157,7 @@ MainWindow::~MainWindow()
 
 }
 
-bool MainWindow::on_delete_event(GdkEventAny* event){
+bool MainWindow::on_delete_event(GdkEventAny*){
     Gtk::Main::quit();
     return true;
 }
@@ -217,7 +217,7 @@ void MainWindow::on_zoomout_clicked(){
 }
 
 
-void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column){
+void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*){
 
     Gtk::TreeModel::iterator iter = modules_treemodel->get_iter(path);
     if(iter)

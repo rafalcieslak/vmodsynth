@@ -57,12 +57,12 @@ Module::~Module()
     }
 }
 
-Module::Module(const Module& other)
+Module::Module(const Module&)
 {
     //copy ctor
 }
 
-bool Module::is_point_within(double x, double y){
+bool Module::is_point_within(double x, double){
     return (x >= xoffset && x <= xoffset + panel_width);
 }
 
@@ -96,7 +96,7 @@ int Module::add_switch(int x, int y, std::string text1, std::string text2, bool 
     Engine::register_switch(newswitch);
 }
 
-void Module::draw_background(const Cairo::RefPtr<Cairo::Context>& cr, double grayness){
+void Module::draw_background(const Cairo::RefPtr<Cairo::Context>& cr, double){
     cr->save();
     cr->set_source_rgb(60.0/256.0,60.0/256.0,65.0/256.0);
     cr->move_to(xoffset                 + 1.5,                       1.5);

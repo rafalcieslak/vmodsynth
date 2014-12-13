@@ -73,7 +73,7 @@ void v300::dsp(){
     freq += freq_last;
     freq_last = freq*(1.0-M_PI/20.0);
 
-    double angle = 2.0*M_PI*freq/44100.0;
+    //double angle = 2.0*M_PI*freq/44100.0;
     double bandwidth = knobs[1]->get_value();
     bandwidth = 0.01*pow(1000,bandwidth);
     bandwidth *= (1.0 + knobs[3]->get_value()*inlets[4]->pull_sample()/50.0);
