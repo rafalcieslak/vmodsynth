@@ -27,11 +27,11 @@ v100::v100()
     type_id = 100;
     panel_width = 294;
 
-    //                                         inlets  _______
-    //4,472135955                              knobs   ____   \
-    //163 286 410 531                          outlets _   \   \
-    // 14    271                                        \   \   \
-
+    /*                                         inlets  _______
+      4,472135955                              knobs   ____   \
+      163 286 410 531                          outlets _   \   \
+       14    271                                        \   \   \
+    */
     add_outlet(35,590); // sine                         0   |   |
     add_outlet(89,590); // triangle                     1   |   |
     add_outlet(146,590); // saw                         2   |   |

@@ -50,7 +50,7 @@ class Knob
 
         bool controlled;
         int channel;
-        int controller;
+        unsigned int controller;
         virtual void set_value_from_controller(int v);
 
     protected:
