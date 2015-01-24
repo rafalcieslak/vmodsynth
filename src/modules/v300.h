@@ -44,7 +44,7 @@ class v300 : public Module
         double bp_last;
         double bp_prev;
 
-        double biq[10][3];
+        //double biq[10][3];
 };
 
 #endif // V300_H

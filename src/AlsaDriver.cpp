@@ -83,7 +83,7 @@ void open_pcm(char *pcm) {
 }
 
 const short short_max = ((int)2<<14) - (int)1;
-const short short_min = ((int)2<<14) + (int)1;
+//const short short_min = ((int)2<<14) + (int)1;
 
 void add_sample(double l, double r){
     if(buf_ptr >= 2*BUFFER_SIZE) return;
@@ -170,7 +170,8 @@ int playback () {
     //This is the single DSP iteration.
 
     //Begin by freezing the GTK/GDK internal loops, so that they do not cause race conditions while calculations take place.
-    gdk_threads_enter();
+    // No this is wrong. The DSP routines should NEVER perform any interaction with the GUI!
+    //gdk_threads_enter();
 
 
     memset(sound_buffer,0,BUFFER_SIZE*2*sizeof(short));
@@ -188,7 +189,7 @@ int playback () {
     }
 
     //Remove GTK/GDK threads lock.
-    gdk_threads_leave();
+    //gdk_threads_leave();
 
     //Finally, pass the contents of the soundbuffer to ALSA.
     return snd_pcm_writei(pcm_handle, sound_buffer, BUFFER_SIZE);

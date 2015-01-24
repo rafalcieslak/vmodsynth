@@ -9,8 +9,8 @@ add_definitions(
 	--std=c++11
 	-Wall
 	-Wextra
-#	-Werror
-	-O3
+	-Werror
+	-g
 )
 
 link_directories(

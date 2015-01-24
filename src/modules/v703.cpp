@@ -59,7 +59,7 @@ void v703::dsp(){
 
     double s1 = 0.0, s2 = 0.0, s3 = 0.0, s4 = 0.0;
     double time1 = 52.1 * roomsize, time2 = 93.4 * roomsize, time3 = 84.1 * roomsize, time4 = 69.5 * roomsize;
-    int d1 = 44.1000*time1, d2 = 44.1000*time2, d3 = 44.1000*time3, d4 = 44.1000*time4;
+    unsigned int d1 = 44.1000*time1, d2 = 44.1000*time2, d3 = 44.1000*time3, d4 = 44.1000*time4;
 
     //read from main reverbating delay tables
 

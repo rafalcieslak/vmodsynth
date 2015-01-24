@@ -40,18 +40,13 @@ int main(int argc, char *argv[]){
         strcpy(device,argv[1]);
     }
 
-    g_type_init();
-    gdk_threads_init();
-
     Gtk::Main kit(argc,argv);
 
     std::thread audio_thread(audio_thread_func);
 
     mainwindow = new MainWindow;
 
-    gdk_threads_enter();
     Gtk::Main::run();
-    gdk_threads_leave();
 
     quit_threads = true;
     audio_thread.join();

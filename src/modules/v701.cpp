@@ -41,7 +41,7 @@ void v701::dsp(){
     double in = inlets[0]->pull_sample();
     double delay = pow(6.32455532,knobs[0]->get_value()/5.0) * 0.05;
     delay = delay*44100.0;
-    int time = delay;
+    unsigned int time = delay;
     double add = 0.0;
     while(del.size() > time) del.pop();
     if(del.size() == time){

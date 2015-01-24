@@ -40,8 +40,8 @@ v200::v200()
     add_outlet(33,525);
     add_outlet(103,525);
 
-    add_switch(68,217.5);
-    add_switch(68,397.5);
+    add_switch(68,217);
+    add_switch(68,397);
 }
 
 v200::~v200()
