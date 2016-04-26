@@ -23,7 +23,7 @@ v101::v101()
 {
     name = "Noise source";
     caption = "NOISE SOURCE";
-    type_id = 203;
+    type_id = 101; //Chaned by RG2016 (was 203)
     panel_width = 136;
     add_outlet(33,90);   //white1
     add_outlet(103,90);  //white2

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<patch>
+  <modules>
+   <module name="Oscillator" type_id="100"/>
+  </modules>
+  <wires>
+  </wires>
+  <knobs>
+    <knob n="0" value="-5" />
+    <knob n="1" value="2" />
+    <knob n="2" value="7.07" />
+    <knob n="3" value="0.795" />
+    <knob n="4" value="12" />
+    <knob n="5" value="10" />
+  </knobs>
+  <switches>
+  </switches>
+</patch>
+

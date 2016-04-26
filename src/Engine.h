@@ -35,15 +35,15 @@ namespace Engine{
 std::vector<Module* > modules;
 std::set<Inlet* > inlets;
 std::set<Outlet* > outlets;
-std::set<Knob* > knobs;
-std::set<Switch* > switches;
+std::vector<Knob* > knobs;
+std::vector<Switch* > switches;
 std::set<Wire* > wires;
 #else
 extern std::vector<Module* > modules;
 extern std::set<Inlet* > inlets;
 extern std::set<Outlet* > outlets;
-extern std::set<Knob* > knobs;
-extern std::set<Switch* > switches;
+extern std::vector<Knob* > knobs; 
+extern std::vector<Switch* > switches; //Changed RG2016
 extern std::set<Wire* > wires;
 
 extern Module* selected_module;
@@ -81,6 +81,12 @@ void unregister_inlet(Inlet* inlet);
 void unregister_outlet(Outlet* outlet);
 void unregister_knob(Knob* knob);
 void unregister_switch(Switch* _switch);
+
+int get_mod_pos(Module* m); //RG
+void dump_patch(std::string); //Added RG2016
+void parse_file(std::string); //Added RG2016
+void save_patch(); //Added RG2016
+void load_patch(); //Added RG2016
 
 } //namespace Engine
 

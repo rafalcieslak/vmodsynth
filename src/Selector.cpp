@@ -20,30 +20,43 @@
 
 #include "Selector.h"
 #include "Module.h"
+#include <iostream>
 
-Selector::Selector(Module *parent, int x, int y, int _vals, int def, bool _hide_val) : Knob(parent, x, y, 0.0, def, (double)_vals-0.99)
-{
+Selector::Selector(Module *parent, int x, int y, int _vals, int def, bool _hide_val) : Knob(parent, x, y, 0.0, def, (double)_vals-0.99){
     vals = _vals;
     selector_value = (int)value;
-    hide_val = _hide_val;
+    //hide_val = _hide_val;
+    hide_val = false;
+    subtype=1;
 }
 
 Selector::~Selector()
 {
     //dtor
 }
+
 void Selector::movement_position(int x, int y){
     Knob::movement_position(x,y);
     selector_value = (int)value;
 }
+
 
 void Selector::set_value_from_controller(int v){
     Knob::set_value_from_controller(v);
     selector_value = (int)value;
 }
 
+void Selector::set_value(double val)
+{
+  //std::cerr << "Hello from Selector::set_value" << "\n";
+  int v2 = 127*val/2; //How does this really work?
+  set_value_from_controller(v2);
+  value=(int)val;
+  selector_value=value;  
+}
+
 double Selector::get_value(){
-    return (double)selector_value;
+    return (double) selector_value;
 }
 
 void Selector::draw(const Cairo::RefPtr<Cairo::Context>& cr){

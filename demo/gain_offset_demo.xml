@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<patch>
+  <modules>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Fade / Offset" type_id="212"/>
+   <module name="Summing" type_id="211"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Filter" type_id="300"/>
+   <module name="Audio out" type_id="1001"/>
+  </modules>
+  <wires>
+    <wire src="0" sx="200" sy="590" dst="2" dx="103" dy="338"/>
+    <wire src="3" sx="36" sy="518" dst="5" dx="45" dy="128"/>
+    <wire src="0" sx="35" sy="590" dst="1" dx="146" dy="232"/>
+    <wire src="1" sx="35" sy="590" dst="0" dx="146" dy="232"/>
+    <wire src="4" sx="35" sy="590" dst="5" dx="36" dy="513"/>
+    <wire src="3" sx="36" sy="450" dst="4" dx="35" dy="232"/>
+    <wire src="1" sx="200" sy="590" dst="2" dx="33" dy="338"/>
+    <wire src="2" sx="103" sy="590" dst="3" dx="36" dy="153"/>
+    <wire src="5" sx="180" sy="513" dst="6" dx="68" dy="90"/>
+    <wire src="2" sx="33" sy="85" dst="3" dx="36" dy="85"/>
+  </wires>
+  <knobs>
+    <knob n="0" value="-0.13" />
+    <knob n="1" value="0" />
+    <knob n="2" value="0" />
+    <knob n="3" value="0.428" />
+    <knob n="4" value="8.142" />
+    <knob n="5" value="0" />
+    <knob n="6" value="1.87" />
+    <knob n="7" value="0" />
+    <knob n="8" value="0" />
+    <knob n="9" value="0.5" />
+    <knob n="10" value="8.646" />
+    <knob n="11" value="0" />
+    <knob n="12" value="0.595" />
+    <knob n="13" value="0.8225" />
+    <knob n="14" value="0.885" />
+    <knob n="15" value="2.11" />
+    <knob n="16" value="0.685" />
+    <knob n="17" value="1" />
+    <knob n="18" value="0" />
+    <knob n="19" value="0.5" />
+    <knob n="20" value="1.368" />
+    <knob n="21" value="0" />
+    <knob n="22" value="2.075" />
+    <knob n="23" value="0.105" />
+    <knob n="24" value="0" />
+    <knob n="25" value="0" />
+    <knob n="26" value="76.3" />
+  </knobs>
+  <switches>
+  </switches>
+</patch>

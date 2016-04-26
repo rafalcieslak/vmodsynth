@@ -30,6 +30,8 @@ MainWindow::MainWindow() :
                             toolbutton_remove(Gtk::Stock::REMOVE),
                             toolbutton_zoomin(Gtk::Stock::ZOOM_IN),
                             toolbutton_zoomout(Gtk::Stock::ZOOM_OUT),
+                            toolbutton_save(Gtk::Stock::SAVE), //RG2016
+                            toolbutton_load(Gtk::Stock::OPEN), //RG2016
                             adding(false)
 {
     set_title("vModSynth");
@@ -39,6 +41,8 @@ MainWindow::MainWindow() :
     main_vbox.pack_start(toolbar,false,false);
     main_vbox.pack_start(cabinet_add_box,true,true);
 
+    toolbar.append(toolbutton_load); //RG2016
+    toolbar.append(toolbutton_save); //RG2016
     toolbar.append(toolbutton_edit);
     toolbar.append(toolbutton_sep);
     toolbar.append(toolbutton_add);
@@ -55,6 +59,8 @@ MainWindow::MainWindow() :
     toolbutton_remove.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_remove_clicked));
     toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
     toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
+    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); //RG2016
+    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked)); //RG2016
 
     //black toolbars in ubuntu
     Glib::RefPtr<Gtk::StyleContext> sc = toolbar.get_style_context();
@@ -114,6 +120,12 @@ MainWindow::MainWindow() :
     row[modlist_col.id] = 201;
     row[modlist_col.fullname] = "Panorama/Crossfade";
     row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 211;
+    row[modlist_col.fullname] = "Sum";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 212;
+    row[modlist_col.fullname] = "Fade and Offset";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 203;
     row[modlist_col.fullname] = "Sample and hold";
     row = *(modules_treemodel->append(row_cat_effects.children()));
@@ -144,6 +156,16 @@ MainWindow::~MainWindow()
 {
 
 }
+
+void MainWindow::on_save_clicked(){ //RG2016
+    //Engine::dump_patch();
+    Engine::save_patch();
+}
+
+void MainWindow::on_load_clicked(){ //RG2016
+    Engine::load_patch();
+}
+
 
 bool MainWindow::on_delete_event(GdkEventAny* event){
     Gtk::Main::quit();

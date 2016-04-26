@@ -66,6 +66,23 @@ bool Module::is_point_within(double x, double y){
     return (x >= xoffset && x <= xoffset + panel_width);
 }
 
+Inlet* Module::get_inlet_at(int x, int y) //Added RG 2016
+{
+    for(auto i = inlets.begin(); i != inlets.end(); i++)
+    {
+       if ((*i)-> x == x && (*i)-> y == y ) return *i;
+    }
+}
+
+Outlet* Module::get_outlet_at(int x, int y) //Added RG 2016
+{
+    for(auto i = outlets.begin(); i != outlets.end(); i++)
+    {
+       if ((*i)-> x == x && (*i)-> y == y ) return *i;
+    }
+}
+
+
 int Module::add_inlet(int x, int y){
     Inlet* newinlet = new Inlet(this,x,y);
     inlets.push_back(newinlet);

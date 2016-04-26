@@ -30,6 +30,7 @@ extern MainWindow* mainwindow;
 
 Knob::Knob(Module* _parent, int _x, int _y, double _min, double _value, double _max, int _steps)
 {
+    subtype = 0; //Basic Knob unless proved otherwise RG2016
     parent = _parent;
 
     x = _x;
@@ -60,6 +61,14 @@ Knob::~Knob()
 double Knob::get_value(){
     return value;
 }
+
+void Knob::set_value(double val) //RG 2016
+{
+ //std::cerr << "Hello from Knob::set_value() \n";
+ value = val;
+ redraw_me();
+}
+
 
 void Knob::movement_start(){
     //std::cout << "Knob movement started.\n";

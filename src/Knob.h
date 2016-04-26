@@ -35,6 +35,7 @@ class Knob
         Module *parent;
 
         virtual double get_value();
+        void set_value(double val); //RG 2016
 
         bool is_point_within(double x, double y);
 
@@ -51,7 +52,9 @@ class Knob
         bool controlled;
         int channel;
         int controller;
+        int subtype; //added RG2016 for reloading of settings from XML-file
         virtual void set_value_from_controller(int v);
+
 
     protected:
         int x;

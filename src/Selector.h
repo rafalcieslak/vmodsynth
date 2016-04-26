@@ -37,6 +37,7 @@ class Selector : public Knob
         void movement_position(int x, int y);
 
         double get_value();
+        void set_value(double val);
 
         void set_value_from_controller(int v);
 

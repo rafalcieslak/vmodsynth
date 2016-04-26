@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<patch>
+ <modules>
+  <module name="Oscillator" type_id="100"/>
+  <module name="Audio out" type_id="1001"/>
+ </modules>
+ <wires>
+   <wire src="0" sx="200" sy="590" dst="1" dx="33" dy="280"/>
+ </wires>
+ <knobs>
+   <knob n="0" value="0" />
+   <knob n="1" value="0" />
+   <knob n="2" value="0" />
+   <knob n="3" value="2" />
+   <knob n="4" value="0" />
+   <knob n="5" value="0.5" />
+   <knob n="6" value="90" />
+ </knobs>
+ <switches>
+ </switches>
+</patch>
+

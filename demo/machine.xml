@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<patch>
+  <modules>
+   <module name="Noise source" type_id="101"/>
+   <module name="Fade / Offset" type_id="212"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Fade / Offset" type_id="212"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Audio out" type_id="1001"/>
+   <module name="Summing" type_id="211"/>
+  </modules>
+  <wires>
+    <wire src="8" sx="36" sy="450" dst="7" dx="68" dy="90"/>
+    <wire src="3" sx="35" sy="590" dst="2" dx="146" dy="232"/>
+    <wire src="1" sx="33" sy="85" dst="1" dx="103" dy="338"/>
+    <wire src="2" sx="200" sy="590" dst="3" dx="146" dy="232"/>
+    <wire src="5" sx="103" sy="590" dst="6" dx="146" dy="232"/>
+    <wire src="3" sx="252" sy="590" dst="5" dx="103" dy="338"/>
+    <wire src="6" sx="89" sy="590" dst="8" dx="36" dy="153"/>
+    <wire src="1" sx="103" sy="590" dst="8" dx="36" dy="85"/>
+    <wire src="3" sx="200" sy="590" dst="4" dx="35" dy="481"/>
+    <wire src="0" sx="103" sy="170" dst="1" dx="33" dy="338"/>
+    <wire src="5" sx="33" sy="85" dst="6" dx="35" dy="232"/>
+    <wire src="4" sx="89" sy="590" dst="5" dx="33" dy="338"/>
+  </wires>
+  <knobs>
+    <knob n="0" value="-0.33" />
+    <knob n="1" value="0.885" />
+    <knob n="2" value="4.7175" />
+    <knob n="3" value="0.12" />
+    <knob n="4" value="3.605" />
+    <knob n="5" value="0" />
+    <knob n="6" value="0" />
+    <knob n="7" value="0.5" />
+    <knob n="8" value="8.448" />
+    <knob n="9" value="0" />
+    <knob n="10" value="-1.385" />
+    <knob n="11" value="1" />
+    <knob n="12" value="0" />
+    <knob n="13" value="0.5425" />
+    <knob n="14" value="4.542" />
+    <knob n="15" value="9.335" />
+    <knob n="16" value="5" />
+    <knob n="17" value="0" />
+    <knob n="18" value="0" />
+    <knob n="19" value="0" />
+    <knob n="20" value="0" />
+    <knob n="21" value="0.145" />
+    <knob n="22" value="2.325" />
+    <knob n="23" value="-1.005" />
+    <knob n="24" value="-1.215" />
+    <knob n="25" value="1.63" />
+    <knob n="26" value="1.765" />
+    <knob n="27" value="0" />
+    <knob n="28" value="7.56" />
+    <knob n="29" value="0" />
+    <knob n="30" value="5.46" />
+    <knob n="31" value="0" />
+    <knob n="32" value="85.5" />
+  </knobs>
+  <switches>
+  </switches>
+</patch>

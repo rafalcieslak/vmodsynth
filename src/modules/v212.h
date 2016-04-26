@@ -1,7 +1,8 @@
 /*
-    Copyright (C) 2012, 2013 Rafał Cieślak
+    By Robert Gyllenberg 2016 contributing to vModsynt
 
     This file is part of vModSynth.
+    Copyright (C) 2012, 2013 Rafał Cieślak
 
     vModSynth is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,30 +18,24 @@
     along with vModSynth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODULE_LIST_H
-#define MODULE_LIST_H
 
-#include "Module.h"
+#ifndef V212_H
+#define V212_H
 
-enum ModuleList{
-    V100 = 100,
-    V101 = 101,
-    V200 = 200,
-    V201 = 201,
-    V203 = 203,
-    V210 = 210,
-    V211 = 211,
-    V212 = 212,
-    V230 = 230,
-    V300 = 300,
-    V400 = 400,
-    V701 = 701,
-    V702 = 702,
-    V703 = 703,
-    V1001 = 1001,
-    V1005 = 1005
+#include "../Module.h"
+
+/*
+ * 
+ */
+class v212 : public Module
+{
+    public:
+        v212();
+        virtual ~v212();
+        void dsp();
+        void draw(const Cairo::RefPtr<Cairo::Context>& cr);
+    protected:
+    private:
 };
 
-Module* create_new_module_from_ID(int ID);
-
-#endif // MODULE_LIST_H
+#endif // V212_H

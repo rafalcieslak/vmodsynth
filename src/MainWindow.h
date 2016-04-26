@@ -61,6 +61,8 @@ class MainWindow : public Gtk::Window
         Gtk::SeparatorToolItem toolbutton_sep2;
         Gtk::ToolButton toolbutton_zoomin;
         Gtk::ToolButton toolbutton_zoomout;
+        Gtk::ToolButton toolbutton_save; //RG2016
+        Gtk::ToolButton toolbutton_load; //RG2016
 
         bool on_delete_event(GdkEventAny* event);
 
@@ -71,6 +73,9 @@ class MainWindow : public Gtk::Window
         void on_remove_clicked();
         void on_zoomin_clicked();
         void on_zoomout_clicked();
+        void on_save_clicked(); //RG2016
+        void on_load_clicked(); //RG2016
+
         bool adding;
 
         void on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
