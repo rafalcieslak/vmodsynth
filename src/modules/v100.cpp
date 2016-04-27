@@ -27,11 +27,6 @@ v100::v100()
     type_id = 100;
     panel_width = 294;
 
-    /*                                         inlets  _______
-      4,472135955                              knobs   ____   \
-      163 286 410 531                          outlets _   \   \
-       14    271                                        \   \   \
-    */
     add_outlet(35,590); // sine                         0   |   |
     add_outlet(89,590); // triangle                     1   |   |
     add_outlet(146,590); // saw                         2   |   |
@@ -74,7 +69,10 @@ void v100::dsp(){
     }
     last_hs_in = hs;
 
-    if(!inlets[1]->connection && !inlets[2]->connection){
+    //Why are these excluded in case of external Octave/Volts ???? (RG2016)
+
+    //if(!inlets[1]->connection && !inlets[2]->connection){
+
         int mode = knobs[1]->get_value(); //range selector
         double base, exprange;
         if(mode == 0){ //low
@@ -100,8 +98,8 @@ void v100::dsp(){
         double finetune = knobs[0]->get_value()/5.0;
         //std::cout << pow(exprange,finetune) << std::endl;
         freq = base * pow(exprange,finetune);
-    }else{
-        freq = 1.0;
+//    }else{
+        //freq = 1.0;
         double one_V_per_octave;
         if(inlets[1]->connection){
             one_V_per_octave = inlets[1]->pull_sample();
@@ -111,7 +109,7 @@ void v100::dsp(){
             one_V_per_octave = inlets[2]->pull_sample();
             freq *= 8.17579891564 * exp(0.69314718 * one_V_per_octave);
         }
-    }
+  //  }
 
     if(inlets[3]->connection){
         //exp freq modifier

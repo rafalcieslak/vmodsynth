@@ -56,6 +56,10 @@ class Module
         virtual void draw(const Cairo::RefPtr<Cairo::Context>& cr)=0; //pure virtual
 
         bool highlight;
+
+        Inlet* get_inlet_at(int x, int y);   // Added RG 2016
+        Outlet* get_outlet_at(int x, int y); // Added RG 2016
+
     protected:
         void add_inlet(int x, int y);
         void add_outlet(int x, int y);

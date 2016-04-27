@@ -18,34 +18,23 @@
 */
 
 
-#ifndef SELECTOR_H
-#define SELECTOR_H
+#ifndef V211_H
+#define V211_H
 
-#include "Knob.h"
+#include "../Module.h"
 
-class Module;
-
-class Selector : public Knob
+/*
+ * Summing module //2016
+ */
+class v211 : public Module
 {
     public:
-        Selector(Module *parent, int x, int y, int _vals, int def, bool _hide_val = false);
-        virtual ~Selector();
-
-        int vals;
-        int selector_value;
-
-        void movement_position(int x, int y);
-
-        double get_value();
-
-        void set_value(double val); //RG2016
-
-        void set_value_from_controller(int v);
-
+        v211();
+        virtual ~v211();
+        void dsp();
         void draw(const Cairo::RefPtr<Cairo::Context>& cr);
     protected:
     private:
-        bool hide_val;
 };
 
-#endif // SELECTOR_H
+#endif // V211_H

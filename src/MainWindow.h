@@ -52,6 +52,9 @@ class MainWindow : public Gtk::Window
         Glib::RefPtr<Gtk::TreeStore> modules_treemodel;
         Gtk::TreeView modules_list;
 
+        Gtk::ToolButton toolbutton_save; //RG2016
+        Gtk::ToolButton toolbutton_load; //RG2016
+
         Gtk::ToolButton toolbutton_add;
         Gtk::ToggleToolButton toolbutton_edit;
         Gtk::SeparatorToolItem toolbutton_sep;
@@ -61,6 +64,10 @@ class MainWindow : public Gtk::Window
         Gtk::SeparatorToolItem toolbutton_sep2;
         Gtk::ToolButton toolbutton_zoomin;
         Gtk::ToolButton toolbutton_zoomout;
+
+        void on_save_clicked(); //RG2016
+        void on_load_clicked(); //RG2016
+
 
         bool on_delete_event(GdkEventAny* event);
 
