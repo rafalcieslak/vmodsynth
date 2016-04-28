@@ -23,7 +23,7 @@ and, from within that build directory, run:
 
 To run without installing (from build directory):
 
-    src/vmodsynth
+    ./vmodsynth
 
 To install:
 

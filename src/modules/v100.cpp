@@ -76,7 +76,7 @@ void v100::dsp(){
 
     if(!inlets[1]->connection && !inlets[2]->connection){
         int mode = knobs[1]->get_value(); //range selector
-        double base, exprange;
+        double base = 0.0, exprange;
         if(mode == 0){ //low
             exprange = 22.360679775;
             base = 1.118033989;
