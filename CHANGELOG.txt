@@ -1,0 +1,10 @@
+vModSynth 1.1
+
+ * Various minor GUI fixes [Sebastian Morr]
+ * Removed GNU autotool scripts and migrated to CMake.
+ * Migrated to git source version control.
+
+vModSynth 1.0
+  10-02-2015
+
+ * Initial release
