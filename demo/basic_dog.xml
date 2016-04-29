@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<patch name="basic dog">
+  <modules>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="ADSR envemope" type_id="230"/>
+   <module name="Multiply" type_id="200"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Filter" type_id="300"/>
+   <module name="Amplifier" type_id="210"/>
+   <module name="Audio out" type_id="1001"/>
+  </modules>
+  <wires>
+    <wire src="5" sx="180" sy="513" dst="6" dx="33" dy="513"/>
+    <wire src="4" sx="252" sy="590" dst="5" dx="36" dy="513"/>
+    <wire src="1" sx="89" sy="590" dst="0" dx="146" dy="232"/>
+    <wire src="3" sx="103" sy="525" dst="5" dx="45" dy="128"/>
+    <wire src="3" sx="33" sy="525" dst="6" dx="33" dy="438"/>
+    <wire src="3" sx="103" sy="450" dst="4" dx="146" dy="232"/>
+    <wire src="6" sx="33" sy="588" dst="7" dx="68" dy="90"/>
+    <wire src="2" sx="103" sy="588" dst="3" dx="33" dy="450"/>
+    <wire src="1" sx="252" sy="590" dst="2" dx="33" dy="588"/>
+    <wire src="0" sx="200" sy="590" dst="1" dx="146" dy="232"/>
+  </wires>
+  <knobs>
+    <knob n="0" value="-1.52" />
+    <knob n="1" value="0" />
+    <knob n="2" value="0" />
+    <knob n="3" value="0.5" />
+    <knob n="4" value="12" />
+    <knob n="5" value="0" />
+    <knob n="6" value="-0.035" />
+    <knob n="7" value="0" />
+    <knob n="8" value="0" />
+    <knob n="9" value="0.8495" />
+    <knob n="10" value="12" />
+    <knob n="11" value="0" />
+    <knob n="12" value="1.4" />
+    <knob n="13" value="4.685" />
+    <knob n="14" value="0" />
+    <knob n="15" value="0" />
+    <knob n="16" value="1.6" />
+    <knob n="17" value="2" />
+    <knob n="18" value="0" />
+    <knob n="19" value="0.327" />
+    <knob n="20" value="10.86" />
+    <knob n="21" value="0" />
+    <knob n="22" value="6.365" />
+    <knob n="23" value="0.565" />
+    <knob n="24" value="0" />
+    <knob n="25" value="0" />
+    <knob n="26" value="3.055" />
+    <knob n="27" value="10" />
+    <knob n="28" value="1" />
+    <knob n="29" value="100" />
+  </knobs>
+  <switches>
+  <switch n="0" value="0" />
+  <switch n="1" value="0" />
+  </switches>
+</patch>
+

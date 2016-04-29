@@ -19,6 +19,12 @@
 
 #include <iostream>
 #include <set>
+#include <fstream>
+#include "Selector.h"
+#include "libxml++.h"
+//XML parser used is libxml++2.6-dev
+
+#include <cstdlib> //Added 2016 RG
 
 #define ENGINE_DEFS
 #include "Engine.h"
@@ -216,10 +222,12 @@ void register_outlet(Outlet* outlet){
     outlets.insert(outlet);
 }
 void register_knob(Knob* knob){
-    knobs.insert(knob);
+    //knobs.insert(knob);
+    knobs.push_back(knob);
 }
 void register_switch(Switch* _switch){
-    switches.insert(_switch);
+    //switches.insert(_switch);
+    switches.push_back(_switch); //RG2016 adapted for vector vs. set
 }
 void unregister_inlet(Inlet* inlet){
     inlets.erase(inlet);
@@ -227,11 +235,268 @@ void unregister_inlet(Inlet* inlet){
 void unregister_outlet(Outlet* outlet){
     outlets.erase(outlet);
 }
+
 void unregister_knob(Knob* knob){
-    knobs.erase(knob);
+    //knobs.erase(knob); //RG2016 adapted for vector vs. set
+    for(auto i = knobs.begin(); i != knobs.end(); i++)
+    {
+        if ((*i) ==knob)
+        { 
+          knobs.erase(i);
+          break;
+        }
+    }
 }
+
 void unregister_switch(Switch* _switch){
-    switches.erase(_switch);
+    //RG2016 adapted for vector vs. set
+    for(auto i = switches.begin(); i != switches.end(); i++)
+    {
+        if ((*i) == _switch)
+        { 
+          switches.erase(i);
+          break;
+        }
+    }
+
 }
+
+ int get_mod_pos(Module* m){ //RG
+     int n=0;
+     for(auto i = modules.begin(); i != modules.end(); i++)
+     {
+        if ((*i) == m) return n;
+        n++;
+     }
+     return n;
+}
+
+/*** Added functionality for saving and reloading configuration STARTS HERE
+Blame Robert Gyllenberg, Finland 2016
+***/
+
+void dump_patch(std::string filename) //Dumps XML-data to file (default is stderr)
+{
+ std::cerr << "Saving patch, filename=" << filename << "\n";
+
+ std::ofstream outfile;
+ outfile.open (filename);
+ 
+ outfile << "<?xml version=\"1.0\"?>\n"; 
+ outfile << "<patch>\n";
+ outfile << "  <modules>\n";
+ int n=0; int x=0; int y=0;
+ for(auto i = modules.begin(); i != modules.end(); i++)
+ { 
+  outfile << "   <module name=\"" << (*i)->name << "\" type_id=\"" << (*i)->type_id << "\"/>\n"; 
+  //Maybe we could use  (*i)->caption as an option
+ }
+ outfile << "  </modules>\n";
+
+ outfile << "  <wires>\n";
+ for(auto i = wires.begin(); i != wires.end(); i++)
+ { 
+  n = get_mod_pos((*i)->from->parent);
+  x = (*i)->from->x;
+  y = (*i)->from->y;
+  outfile << "    <wire src=\"" << n << "\" sx=\"" << x << "\" sy=\"" << y << "\" ";
+  n = get_mod_pos((*i)->to->parent);
+  x = (*i)->to->x;
+  y = (*i)->to->y;
+  outfile << "dst=\"" << n << "\" dx=\"" << x << "\" dy=\"" << y << "\"/>\n";
+ }
+ outfile << "  </wires>\n";
+
+ outfile << "  <knobs>\n";
+ n=0;
+ 
+//start outputting knob-settings on a per-module basis
+for(auto m = modules.begin(); m != modules.end(); m++)
+ { 
+
+ for(auto i = (*m)->knobs.begin(); i != (*m)->knobs.end(); i++)
+  { 
+   double value = (*i)->get_value();
+   outfile << "    <knob n=\"" << n << "\" value=\"" << value << "\" />\n";
+   n++; //Increment knob counter
+  }
+}
+outfile << "  </knobs>\n";
+
+ outfile << "  <switches>\n";
+ n=0;
+
+for(auto m = modules.begin(); m != modules.end(); m++)
+ { 
+  for(auto i = (*m)->switches.begin(); i != (*m)->switches.end(); i++)
+  { 
+   double value = (*i)->get_value();
+   outfile << "  <switch n=\"" << n << "\" value=\"" << value << "\" />\n";
+   n++; //Increment knob counter
+  }
+ }
+ outfile << "  </switches>\n";
+ outfile << "</patch>\n";
+
+ outfile.close();
+}
+
+void save_patch() //Actually save XML-data to an external file
+{
+GtkWidget *dialog;
+std::string filename;
+dialog = gtk_file_chooser_dialog_new ("Save File",
+				      (GtkWindow*)(mainwindow),
+				      GTK_FILE_CHOOSER_ACTION_SAVE,
+				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+				      NULL);
+
+gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+//gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
+gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "untitled.xml");
+if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    char *filename;
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    dump_patch(filename);
+    g_free (filename);
+  }
+gtk_widget_destroy (dialog);}
+
+void parcefile(std::string filepath)
+//Added RG2016
+{
+ xmlpp::DomParser parser;
+ parser.parse_file(filepath);
+
+ const xmlpp::Node* rootNode = parser.get_document()->get_root_node();
+ xmlpp::Node::NodeList mainList = rootNode->get_children();
+
+ for(xmlpp::Node::NodeList::iterator iter = mainList.begin(); iter != mainList.end(); ++iter)
+ {
+  std::string contName= (*iter)->get_name();
+
+  if(contName=="modules")
+  {
+   xmlpp::Element::NodeList modulesList = (*iter)->get_children();
+   for(xmlpp::Element::NodeList::iterator modIter = modulesList.begin(); modIter != modulesList.end(); ++modIter)
+   {
+    std::string nodeType=(*modIter)->get_name();
+    if(nodeType=="module")
+    {
+     const xmlpp::Element* element1 = dynamic_cast<const xmlpp::Element*>(*modIter);
+     std::string moduleName = element1->get_attribute_value("name"); //Not actually used here
+     std::string moduleId   = element1->get_attribute_value("type_id");
+     int module_type_id = std::stoi(moduleId); 
+     create_and_append_module(module_type_id);
+    }
+   }
+  }
+
+  if(contName=="wires")
+  {
+   xmlpp::Element::NodeList wiresList = (*iter)->get_children();
+   for(xmlpp::Element::NodeList::iterator wireIter = wiresList.begin(); wireIter != wiresList.end(); ++wireIter)
+   {
+    std::string nodeType=(*wireIter)->get_name();
+    if(nodeType=="wire")
+    {
+     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*wireIter);
+     int src = std::stoi(element->get_attribute_value("src"));
+     int sx  = std::stoi(element->get_attribute_value("sx"));
+     int sy  = std::stoi(element->get_attribute_value("sy"));
+     int dst = std::stoi(element->get_attribute_value("dst"));
+     int dx  = std::stoi(element->get_attribute_value("dx"));
+     int dy  = std::stoi(element->get_attribute_value("dy"));
+
+     Module* srcMod = modules[src];
+     Module* dstMod = modules[dst];
+
+     connect(srcMod->get_outlet_at(sx, sy), dstMod->get_inlet_at(dx, dy));
+    }
+   }
+  }
+
+  if(contName=="knobs")
+  {
+   xmlpp::Element::NodeList knobList = (*iter)->get_children();
+
+   int i=0;
+
+   for(xmlpp::Element::NodeList::iterator knobIter = knobList.begin(); knobIter != knobList.end(); ++knobIter)
+   {
+    std::string nodeType=(*knobIter)->get_name();
+    if(nodeType=="knob")
+    {
+     const xmlpp::Element* element2 = dynamic_cast<const xmlpp::Element*>(*knobIter);
+
+     std::setlocale(LC_ALL, "C"); // C uses "." as decimal-point separator
+     double value = std::stof(element2->get_attribute_value("value"));
+     if(knobs[i]->subtype==0)
+     {
+       knobs[i]->set_value(value); //Basic Knob object, no subclass
+     }
+     if(knobs[i]->subtype==1)
+     {
+      Selector* someSelector = (Selector*)knobs[i]; 
+      someSelector->set_value(value); //This Knob is, in fact a Selector object 
+     }
+     i++;
+    }
+   }
+  }
+
+
+  if(contName=="switches")
+  {
+   xmlpp::Element::NodeList switchList = (*iter)->get_children();
+
+   int i=0;
+
+   for(xmlpp::Element::NodeList::iterator switchIter = switchList.begin(); switchIter != switchList.end(); ++switchIter)
+   {
+    std::string nodeType=(*switchIter)->get_name();
+    if(nodeType=="switch")
+    {
+     const xmlpp::Element* element3 = dynamic_cast<const xmlpp::Element*>(*switchIter);
+     std::setlocale(LC_ALL, "C"); // C uses "." as decimal-point separator
+     double value = std::stof(element3->get_attribute_value("value"));
+     switches[i]->set_value(value);
+     i++;
+    }
+   }
+  }
+ 
+ }
+}
+
+void load_patch() //Choose file to load 
+{
+GtkWidget *dialog;
+std::string filename;
+dialog = gtk_file_chooser_dialog_new ("Load Patch",
+				      (GtkWindow*)(mainwindow),
+				      GTK_FILE_CHOOSER_ACTION_OPEN,
+				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+				      NULL);
+
+//gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
+gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "*.xml");
+if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    char *filename;
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    parcefile(filename);
+    g_free (filename);
+  }
+gtk_widget_destroy (dialog);}
+
+
+/*** Added functionality for saving and reloading configuration ENDS here
+Blame Robert Gyllenberg 2016
+***/
+
 
 } //namespace Engine

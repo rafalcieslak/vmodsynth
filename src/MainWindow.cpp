@@ -23,6 +23,9 @@
 #include "Engine.h"
 
 MainWindow::MainWindow() :
+                            toolbutton_save(Gtk::Stock::SAVE), //RG2016
+                            toolbutton_load(Gtk::Stock::OPEN), //RG2016
+
                             toolbutton_add(Gtk::Stock::ADD),
                             toolbutton_edit(Gtk::Stock::EDIT),
                             toolbutton_left(Gtk::Stock::GO_BACK),
@@ -39,6 +42,8 @@ MainWindow::MainWindow() :
     main_vbox.pack_start(toolbar,false,false);
     main_vbox.pack_start(cabinet_add_box,true,true);
 
+    toolbar.append(toolbutton_load); //RG2016
+    toolbar.append(toolbutton_save); //RG2016
     toolbar.append(toolbutton_edit);
     toolbar.append(toolbutton_sep);
     toolbar.append(toolbutton_add);
@@ -59,6 +64,9 @@ MainWindow::MainWindow() :
     toolbutton_remove.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_remove_clicked));
     toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
     toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
+
+    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); //RG2016
+    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked)); //RG2016
 
     toolbutton_add.add_accelerator("clicked", accel_group, GDK_KEY_plus, (Gdk::ModifierType) 0, (Gtk::AccelFlags) 0);
     toolbutton_left.add_accelerator("clicked", accel_group, GDK_KEY_Left, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
@@ -128,6 +136,15 @@ MainWindow::MainWindow() :
     row[modlist_col.id] = 203;
     row[modlist_col.fullname] = "Sample and hold";
     row = *(modules_treemodel->append(row_cat_effects.children()));
+
+    row[modlist_col.id] = 211;
+    row[modlist_col.fullname] = "Sum";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+    row[modlist_col.id] = 212;
+    row[modlist_col.fullname] = "Gain + Offset";
+    row = *(modules_treemodel->append(row_cat_signal.children()));
+
+
     row[modlist_col.id] = 701;
     row[modlist_col.fullname] = "Echo";
     row = *(modules_treemodel->append(row_cat_effects.children()));
@@ -215,6 +232,15 @@ void MainWindow::on_zoomin_clicked(){
 void MainWindow::on_zoomout_clicked(){
     Engine::zoom_out();
 }
+
+ void MainWindow::on_save_clicked(){ //RG2016
+     //Engine::dump_patch();
+     Engine::save_patch();
+ }
+ 
+ void MainWindow::on_load_clicked(){ //RG2016
+     Engine::load_patch();
+ }
 
 
 void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*){

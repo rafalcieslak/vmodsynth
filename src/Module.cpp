@@ -62,6 +62,26 @@ Module::Module(const Module&)
     //copy ctor
 }
 
+Inlet* Module::get_inlet_at(int x, int y) //Added RG 2016
+{
+    Inlet * result = *(inlets.begin());
+    for(auto i = inlets.begin(); i != inlets.end(); i++)
+    {
+       if ((*i)-> x == x && (*i)-> y == y ) return *i;
+    }
+    return result;
+}
+ 
+Outlet* Module::get_outlet_at(int x, int y) //Added RG 2016
+{
+   Outlet * result = *(outlets.begin());
+   for(auto i = outlets.begin(); i != outlets.end(); i++)
+   {
+      if ((*i)-> x == x && (*i)-> y == y ) return *i;
+   }
+    return result;
+}
+
 bool Module::is_point_within(double x, double){
     return (x >= xoffset && x <= xoffset + panel_width);
 }
