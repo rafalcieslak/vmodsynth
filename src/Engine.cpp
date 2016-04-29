@@ -22,9 +22,8 @@
 #include <fstream>
 #include "Selector.h"
 #include "libxml++.h"
-//XML parser used is libxml++2.6-dev
 
-#include <cstdlib> //Added 2016 RG
+#include <cstdlib>
 
 #define ENGINE_DEFS
 #include "Engine.h"
@@ -271,11 +270,8 @@ void unregister_switch(Switch* _switch){
      return n;
 }
 
-/*** Added functionality for saving and reloading configuration STARTS HERE
-Blame Robert Gyllenberg, Finland 2016
-***/
 
-void dump_patch(std::string filename) //Dumps XML-data to file (default is stderr)
+void dump_patch(std::string filename) //Dumps XML-data to file
 {
  std::cerr << "Saving patch, filename=" << filename << "\n";
 
@@ -345,12 +341,13 @@ void save_patch() //Actually save XML-data to an external file
 {
 GtkWidget *dialog;
 std::string filename;
-dialog = gtk_file_chooser_dialog_new ("Save File",
-				      (GtkWindow*)(mainwindow),
-				      GTK_FILE_CHOOSER_ACTION_SAVE,
-				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-				      NULL);
+dialog = gtk_file_chooser_dialog_new 
+  ("Save File",
+   (GtkWindow*)(mainwindow),
+   GTK_FILE_CHOOSER_ACTION_SAVE,
+   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+   GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+   NULL);
 
 gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
 //gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
@@ -365,7 +362,6 @@ if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
 gtk_widget_destroy (dialog);}
 
 void parcefile(std::string filepath)
-//Added RG2016
 {
  xmlpp::DomParser parser;
  parser.parse_file(filepath);
@@ -472,15 +468,16 @@ void parcefile(std::string filepath)
 }
 
 void load_patch() //Choose file to load 
-{
-GtkWidget *dialog;
-std::string filename;
-dialog = gtk_file_chooser_dialog_new ("Load Patch",
-				      (GtkWindow*)(mainwindow),
-				      GTK_FILE_CHOOSER_ACTION_OPEN,
-				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-				      NULL);
+ {
+  GtkWidget *dialog;
+  std::string filename;
+  dialog = gtk_file_chooser_dialog_new 
+   ("Load Patch",
+    (GtkWindow*)(mainwindow),
+     GTK_FILE_CHOOSER_ACTION_OPEN,
+     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+     GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+     NULL);
 
 //gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
 gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "*.xml");
@@ -492,11 +489,5 @@ if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     g_free (filename);
   }
 gtk_widget_destroy (dialog);}
-
-
-/*** Added functionality for saving and reloading configuration ENDS here
-Blame Robert Gyllenberg 2016
-***/
-
 
 } //namespace Engine

@@ -35,24 +35,23 @@ namespace Engine{
 std::vector<Module* > modules;
 std::set<Inlet* > inlets;
 std::set<Outlet* > outlets;
-std::vector<Knob* > knobs;      	//RG2016 (was std::set)
-std::vector<Switch* > switches; 	//dito< int get_mod_pos(Module* m); //RG
+std::vector<Knob* > knobs;
+std::vector<Switch* > switches;
 std::set<Wire* > wires;
 #else
 extern std::vector<Module* > modules;
 extern std::set<Inlet* > inlets;
 extern std::set<Outlet* > outlets; 	
-extern std::vector<Knob* > knobs;  	//dito
-extern std::vector<Switch* > switches;  //dito
-extern std::set<Wire* > wires;
+extern std::vector<Knob* > knobs;
+extern std::vector<Switch* > switches;extern std::set<Wire* > wires;
 
 extern Module* selected_module;
 #endif
 
-void dump_patch(std::string); 	//Added RG2016
-void parse_file(std::string); 	//Added RG2016
-void save_patch(); 	 	//Added RG2016
-void load_patch(); 		//Added RG2016
+void dump_patch(std::string);
+void parse_file(std::string);
+void save_patch();
+void load_patch();
 
 void create_and_append_module(int ID);
 void remove_module(Module* m);
@@ -88,6 +87,4 @@ void unregister_knob(Knob* knob);
 void unregister_switch(Switch* _switch);
 
 } //namespace Engine
-
-
 #endif // ENGINE_H
