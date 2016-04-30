@@ -39,6 +39,11 @@ public:
 
 class MidiDriver{
 public:
+    // Shall return 1, if input present and can be processed.
+    // 0 otherwise (eg. timeout reached).
+    virtual int WaitForInput(int timeout) = 0;
+    virtual void ProcessInput() = 0;
+
     virtual int GetNotesOn(int channel) = 0;
     // Returns a pair: pitch, velocity
     virtual std::pair<int,int> GetLastNote(int channel) = 0;

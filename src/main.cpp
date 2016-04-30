@@ -33,18 +33,24 @@ MainWindow *mainwindow;
 
 std::atomic<bool> quit_threads(false);
 
-void audio_main(AudioDriver* audio_driver){
-    AudioContext ctx{audio_driver, nullptr};
-
+void audio_main(AudioContext ctx){
     while(!quit_threads){
+        ctx.audio_driver->CommitBuffer();
+
         for(int i = 0; i < BUFFER_SIZE; i++){
             // These may call audio_driver's AddSample.
             Engine::do_dsp_cycle(ctx);
         }
 
-        while(!quit_threads && ! audio_driver->Drain(50));
+        while(!quit_threads && ! ctx.audio_driver->Drain(1000));
+    }
+}
 
-        audio_driver->CommitBuffer();
+void midi_main(AudioContext ctx){
+    while(!quit_threads){
+        ctx.midi_driver->ProcessInput();
+
+        while(!quit_threads && ! ctx.midi_driver->WaitForInput(1000));
     }
 }
 
@@ -109,6 +115,7 @@ int main(int argc, char *argv[]){
     Gtk::Main kit(argc,argv);
 
     AudioDriver* audio_driver = nullptr;
+    MidiDriver*   midi_driver = nullptr;
 
     // Select audio driver to use
     if(!config_pa && !config_alsa){
@@ -126,10 +133,17 @@ int main(int argc, char *argv[]){
         audio_driver = new AlsaAudioDriver(config_device);
     }
 
+    // Select midi driver to use
+    midi_driver = new AlsaSeqDriver();
+
+    // Create audio context
+    AudioContext ctx = {audio_driver, midi_driver};
+
     // TODO: Create mainwindow on stack here and pass a reference to Engine.
     mainwindow = new MainWindow();
 
-    std::thread audio_thread(audio_main, audio_driver);
+    std::thread audio_thread(audio_main, ctx);
+    std::thread  midi_thread( midi_main, ctx);
 
     if(config_infiles.size() > 0){
         // TODO: Open file.
@@ -137,10 +151,15 @@ int main(int argc, char *argv[]){
 
     Gtk::Main::run();
 
+    // ======================
+
     quit_threads = true;
     audio_thread.join();
+     midi_thread.join();
 
     delete mainwindow;
+    delete midi_driver;
+    delete audio_driver;
 
     return 0;
 }

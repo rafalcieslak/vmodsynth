@@ -31,7 +31,7 @@ class v1005 : public Module
     public:
         v1005();
         virtual ~v1005();
-        void dsp();
+        void dsp_full(AudioContext);
         void draw(const Cairo::RefPtr<Cairo::Context>& cr);
     protected:
     private:

@@ -25,14 +25,6 @@
 
 #include "Driver.h"
 
-namespace AlsaDriver{
-
-int get_last_note_pitch(int ch);
-int get_last_note_velocity(int ch);
-int get_notes_on(int ch);
-
-}
-
 class AlsaAudioDriver : public AudioDriver{
 public:
     AlsaAudioDriver(std::string device);
@@ -44,6 +36,23 @@ private:
     snd_pcm_t *pcm_handle;
     short buffer[2*BUFFER_SIZE];
     unsigned int buffer_pos = 0;
+};
+
+class AlsaSeqDriver : public MidiDriver{
+public:
+    AlsaSeqDriver();
+    virtual int WaitForInput(int timeout);
+    virtual void ProcessInput();
+
+    virtual int GetNotesOn(int channel);
+    // Returns a pair: pitch, velocity
+    virtual std::pair<int,int> GetLastNote(int channel);
+    virtual ~AlsaSeqDriver();
+private:
+    snd_seq_t *seq_handle;
+    int last_note_pitch[17];
+    int last_note_velocity[17];
+    int notes_on[17];
 };
 
 #endif // ALSA_DRIVER_H

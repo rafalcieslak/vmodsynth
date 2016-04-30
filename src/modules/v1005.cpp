@@ -21,6 +21,7 @@
 #include "v1005.h"
 #include "../AlsaDriver.h"
 #include <iostream>
+#include <tuple>
 
 v1005::v1005()
 {
@@ -41,16 +42,17 @@ v1005::~v1005()
     //dtor
 }
 
-void v1005::dsp(){
+void v1005::dsp_full(AudioContext ctx){
     int channel = knobs[0]->get_value();
-    int p = AlsaDriver::get_last_note_pitch(channel);
-    int v = AlsaDriver::get_last_note_velocity(channel);
+    int p,v;
+    std::tie(p, v) = ctx.midi_driver->GetLastNote(channel);
     double pitch = p/12.0;
     double velocity = v*5.0/128.0;
     outlets[0]->push_sample(pitch);
     outlets[1]->push_sample(pitch);
     outlets[2]->push_sample(velocity);
     double gate;
+    std::cout << velocity << std::endl;
     if(v == 0){
         gate = 0;
         last_gate_pitch = 0;
