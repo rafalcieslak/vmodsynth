@@ -20,6 +20,7 @@
 
 #include <gtkmm/main.h>
 #include <thread>
+#include <atomic>
 #include <unistd.h>
 #include <iostream>
 #include <getopt.h>
@@ -30,10 +31,21 @@
 
 MainWindow *mainwindow;
 
-bool quit_threads = false;
+std::atomic<bool> quit_threads(false);
 
-void alsa_audio_thread_func(std::string device){
-    AlsaDriver::thread_main(device);
+void audio_main(AudioDriver* audio_driver){
+    AudioContext ctx{audio_driver, nullptr};
+
+    while(!quit_threads){
+        for(int i = 0; i < BUFFER_SIZE; i++){
+            // These may call audio_driver's AddSample.
+            Engine::do_dsp_cycle(ctx);
+        }
+
+        while(!quit_threads && ! audio_driver->Drain(50));
+
+        audio_driver->CommitBuffer();
+    }
 }
 
 void usage(const char* progname){
@@ -96,7 +108,7 @@ int main(int argc, char *argv[]){
 
     Gtk::Main kit(argc,argv);
 
-    std::thread audio_thread;
+    AudioDriver* audio_driver = nullptr;
 
     // Select audio driver to use
     if(!config_pa && !config_alsa){
@@ -108,12 +120,16 @@ int main(int argc, char *argv[]){
     }
     if(config_pa){
         std::cout << "ERROR: Pulseaudio driver is not yet implemented." << std::endl;
+        // audio_driver = new PulseaudioAlsaDriver();
         return 1;
     }else if(config_alsa){
-        audio_thread = std::thread(alsa_audio_thread_func, config_device);
+        audio_driver = new AlsaAudioDriver(config_device);
     }
 
-    MainWindow mainwindow;
+    // TODO: Create mainwindow on stack here and pass a reference to Engine.
+    mainwindow = new MainWindow();
+
+    std::thread audio_thread(audio_main, audio_driver);
 
     if(config_infiles.size() > 0){
         // TODO: Open file.
@@ -123,6 +139,8 @@ int main(int argc, char *argv[]){
 
     quit_threads = true;
     audio_thread.join();
+
+    delete mainwindow;
 
     return 0;
 }

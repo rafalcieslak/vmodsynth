@@ -19,25 +19,19 @@
 
 
 #include <iostream>
-#include <gtkmm/main.h>
-#include <alsa/asoundlib.h>
-#include <cmath>
 #include <cstring>
 #include "AlsaDriver.h"
 #include "Engine.h"
 
-#define BUFFER_SIZE 128
-
 extern bool quit_threads;
+
+// TODO: std::numeric_limits<short>
+const short short_max = ((int)2<<14) - (int)1;
+//const short short_min = ((int)2<<14) + (int)1;
 
 namespace AlsaDriver{
 
-snd_pcm_t *pcm_handle;
 snd_seq_t *seq_handle;
-
-short sound_buffer[BUFFER_SIZE*2];
-
-int buf_ptr = 0;
 
 void open_seq(){
     if(snd_seq_open(&seq_handle,"default",SND_SEQ_OPEN_INPUT,0) < 0){
@@ -53,59 +47,6 @@ void open_seq(){
 
 }
 
-void open_pcm(const char *pcm) {
-
-    pcm_handle = NULL;
-
-    if (snd_pcm_open(&pcm_handle,pcm,SND_PCM_STREAM_PLAYBACK,0) < 0){
-        std::cout << "Failed to open PCM device '" << pcm << "'. Either the device is busy and you need to close other application using it, or try launching the application with different device as a command-line argument, e.g. 'vmodsynth hw:0,0'.\n";
-        return;
-    }
-    snd_pcm_hw_params_t *hwp;
-    snd_pcm_sw_params_t *swp;
-
-    snd_pcm_hw_params_alloca(&hwp);
-    snd_pcm_hw_params_any(pcm_handle, hwp);
-    snd_pcm_hw_params_set_access(pcm_handle, hwp, SND_PCM_ACCESS_RW_INTERLEAVED); // interlaved channel samples layout in frames
-    snd_pcm_hw_params_set_format(pcm_handle, hwp, SND_PCM_FORMAT_S16_LE); //16 bits per sample
-    unsigned int rate = 44100;
-    snd_pcm_hw_params_set_rate_near(pcm_handle, hwp, &rate, 0);
-    snd_pcm_hw_params_set_channels(pcm_handle, hwp, 2);
-    snd_pcm_hw_params_set_periods(pcm_handle, hwp, 1, 0);
-    snd_pcm_hw_params_set_period_size(pcm_handle, hwp, BUFFER_SIZE, 0);
-    snd_pcm_hw_params(pcm_handle, hwp);
-
-    snd_pcm_sw_params_alloca(&swp);
-    snd_pcm_sw_params_current(pcm_handle,swp);
-    snd_pcm_sw_params_set_avail_min(pcm_handle,swp,BUFFER_SIZE);
-    snd_pcm_sw_params(pcm_handle,swp);
-
-}
-
-const short short_max = ((int)2<<14) - (int)1;
-//const short short_min = ((int)2<<14) + (int)1;
-
-void add_sample(double l, double r){
-    if(buf_ptr >= 2*BUFFER_SIZE) return;
-    //std::cout << "adding sample " << buf_ptr << ": " << q << " (to "<< sound_buffer[buf_ptr  ] << ")" << "\n";
-    int s_l = (l)*(2<<14); // 2<<16 is the range of short. In fact, a 4 times smaller range is used here, so that it covers negative q value too (plus one bit is in fact lost because of the way ALSA uses the buffer)
-    if (l >= 1.0) s_l = short_max;
-    int s_r = (r)*(2<<14);
-    if (r >= 1.0) s_r = short_max;
-
-    /*s += sound_buffer[buf_ptr  ];
-    if (s > short_max) s = short_max;
-    if (s < short_min) s = short_min;
-    sound_buffer[buf_ptr  ] = s;
-    s += sound_buffer[buf_ptr+1];
-    if (s > short_max) s = short_max;
-    if (s < short_min) s = short_min;
-    sound_buffer[buf_ptr+1] = s; */
-
-    sound_buffer[buf_ptr   ] += s_l;
-    sound_buffer[buf_ptr +1] += s_r;
-    //std::cout << "now " << sound_buffer[buf_ptr  ] << "\n";
-}
 
 int last_note_pitch[17];
 int last_note_velocity[17];
@@ -165,37 +106,8 @@ int get_notes_on(int ch){
     return last_note_velocity[ch];
 }
 
-int playback () {
 
-    //This is the single DSP iteration.
-
-    //Begin by freezing the GTK/GDK internal loops, so that they do not cause race conditions while calculations take place.
-    // No this is wrong. The DSP routines should NEVER perform any interaction with the GUI!
-    //gdk_threads_enter();
-
-
-    memset(sound_buffer,0,BUFFER_SIZE*2*sizeof(short));
-
-    //std::cout << "cleared.\n";
-
-    //As the main step, do BUFFER_SIZE cycles of modules' DSP processing to produce this many samples in the output buffer.
-    buf_ptr = 0;
-    for(int x = 0; x < BUFFER_SIZE; x++){
-
-        //Clear the buffer.
-
-        Engine::do_dsp_cycle();
-        buf_ptr += 2;
-    }
-
-    //Remove GTK/GDK threads lock.
-    //gdk_threads_leave();
-
-    //Finally, pass the contents of the soundbuffer to ALSA.
-    return snd_pcm_writei(pcm_handle, sound_buffer, BUFFER_SIZE);
-}
-
-
+/*
 void thread_main(std::string device){
 
     open_pcm(device.c_str());
@@ -206,6 +118,7 @@ void thread_main(std::string device){
     struct pollfd *pfds;
 
     nfds = snd_pcm_poll_descriptors_count(pcm_handle);
+    std::cout << nfds << " <- nfds " << std::endl;
     seq_nfds = snd_seq_poll_descriptors_count(seq_handle,POLLIN);
     pfds = (struct pollfd *)alloca(sizeof(struct pollfd) * (nfds + seq_nfds));
     snd_seq_poll_descriptors(seq_handle,pfds,seq_nfds,POLLIN);
@@ -234,5 +147,96 @@ void thread_main(std::string device){
 
     snd_pcm_close(pcm_handle);
 }
+*/
 
 } //namespace AlsaDriver
+
+
+AlsaAudioDriver::AlsaAudioDriver(std::string device){
+
+    pcm_handle = nullptr;
+
+    if (snd_pcm_open(&pcm_handle, device.c_str(), SND_PCM_STREAM_PLAYBACK, 0) < 0){
+        std::cout << "Failed to open PCM device '" << device << "'. Either the device is busy and you need to close other application using it, or try launching the application with different device as a command-line argument, e.g. 'vmodsynth hw:0,0'.\n";
+        // TODO: Throw an exception.
+        return;
+    }
+    snd_pcm_hw_params_t *hwp;
+    snd_pcm_sw_params_t *swp;
+
+    snd_pcm_hw_params_alloca(&hwp);
+    snd_pcm_hw_params_any(pcm_handle, hwp);
+    // interlaved channel samples layout in frames
+    snd_pcm_hw_params_set_access(pcm_handle, hwp, SND_PCM_ACCESS_RW_INTERLEAVED);
+    // 16 bits per sample
+    snd_pcm_hw_params_set_format(pcm_handle, hwp, SND_PCM_FORMAT_S16_LE);
+    unsigned int rate = 44100;
+    snd_pcm_hw_params_set_rate_near(pcm_handle, hwp, &rate, 0);
+    snd_pcm_hw_params_set_channels(pcm_handle, hwp, 2);
+    snd_pcm_hw_params_set_periods(pcm_handle, hwp, 1, 0);
+    snd_pcm_hw_params_set_period_size(pcm_handle, hwp, BUFFER_SIZE, 0);
+    snd_pcm_hw_params(pcm_handle, hwp);
+
+    snd_pcm_sw_params_alloca(&swp);
+    snd_pcm_sw_params_current(pcm_handle,swp);
+    snd_pcm_sw_params_set_avail_min(pcm_handle,swp,BUFFER_SIZE);
+    snd_pcm_sw_params(pcm_handle,swp);
+
+    bzero(buffer,BUFFER_SIZE*2*sizeof(short));
+}
+
+AlsaAudioDriver::~AlsaAudioDriver(){
+    if(pcm_handle)
+        snd_pcm_close(pcm_handle);
+}
+
+void AlsaAudioDriver::CommitBuffer(){
+    if(!pcm_handle) return;
+
+    int r = snd_pcm_writei(pcm_handle, buffer, BUFFER_SIZE);
+    if(r < BUFFER_SIZE){
+        snd_pcm_prepare(pcm_handle);
+        std::cout << "a XRUN occured! " << r << std::endl;
+    }
+
+    buffer_pos = 0;
+    bzero(buffer,BUFFER_SIZE*2*sizeof(short));
+}
+
+int AlsaAudioDriver::Drain(int timeout){
+    if(!pcm_handle) return 0;
+
+    int nfds;
+    struct pollfd *pfds;
+
+    nfds = snd_pcm_poll_descriptors_count(pcm_handle);
+    if(nfds != 1){
+        std::cout << "WARNING: nfds != 1." << std::endl;
+    }
+    pfds = (struct pollfd *)alloca(sizeof(struct pollfd) * (nfds));
+    snd_pcm_poll_descriptors(pcm_handle, pfds, nfds);
+
+    int n = poll (pfds, nfds, timeout);
+    if(n <= 0) return 0;
+
+    return 1;
+}
+
+void AlsaAudioDriver::AppendSample(double l, double r){
+    if(buffer_pos >= 2*BUFFER_SIZE) return;
+
+    // 2<<16 is the range of short. In fact, a 4 times smaller range
+    // is used here, so that it covers negative q value too (plus one
+    // bit is in fact lost because of the way ALSA uses the buffer)
+    int s_l = (l)*(2<<14);
+    if (l >= 1.0) s_l = short_max;
+    int s_r = (r)*(2<<14);
+    if (r >= 1.0) s_r = short_max;
+
+    // TODO: Proper clipping?
+
+    buffer[buffer_pos    ] += s_l;
+    buffer[buffer_pos +1 ] += s_r;
+
+    buffer_pos += 2;
+}

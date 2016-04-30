@@ -56,7 +56,7 @@ void remove_selected_module();
 void move_selected_module_left();
 void move_selected_module_right();
 
-void do_dsp_cycle();
+void do_dsp_cycle(AudioContext ctx);
 
 double get_gui_scale();
 void zoom_in();

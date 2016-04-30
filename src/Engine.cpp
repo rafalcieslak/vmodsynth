@@ -105,9 +105,9 @@ void move_selected_module_right(){
 /*
  * The key procedure that calculates all data.
  */
-void do_dsp_cycle(){
+void do_dsp_cycle(AudioContext ctx){
     for(auto &w : wires)   w->pass_sample();
-    for(auto &m : modules) m->dsp();
+    for(auto &m : modules) m->dsp_full(ctx);
 }
 
 // ====== VIEW SETTINGS =======

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2012, 2013 Rafał Cieślak
+    Copyright (C) 2012, 2013, 2016 Rafał Cieślak
 
     This file is part of vModSynth.
 
@@ -30,7 +30,7 @@ class v1001 : public Module
     public:
         v1001();
         virtual ~v1001();
-        void dsp();
+        void dsp_full(AudioContext ctx);
         void draw(const Cairo::RefPtr<Cairo::Context>& cr);
     protected:
     private:

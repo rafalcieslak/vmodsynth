@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2012, 2013 Rafał Cieślak
+    Copyright (C) 2012, 2013, 2016 Rafał Cieślak
 
     This file is part of vModSynth.
 
@@ -27,6 +27,7 @@
 #include "Outlet.h"
 #include "Knob.h"
 #include "Switch.h"
+#include "Driver.h"
 
 #define MODULE_PANEL_HEIGHT 630
 
@@ -41,7 +42,12 @@ class Module
         std::string caption;
         int type_id; //ModuleList.h
 
-        virtual void dsp()=0;
+        /* Simple variant of dsp function, which does not use audio context. */
+        virtual void dsp(){};
+        /* Full variant of dsp function, for modules that make interaction with audio context. */
+        virtual void dsp_full(AudioContext){
+            dsp();
+        };
 
         std::vector<Inlet *> inlets;
         std::vector<Outlet *> outlets;

@@ -21,15 +21,29 @@
 #define ALSA_DRIVER_H
 
 #include <string>
+#include <alsa/asoundlib.h>
+
+#include "Driver.h"
 
 namespace AlsaDriver{
-
-void thread_main(std::string device);
-void add_sample(double l, double r);
 
 int get_last_note_pitch(int ch);
 int get_last_note_velocity(int ch);
 int get_notes_on(int ch);
 
 }
+
+class AlsaAudioDriver : public AudioDriver{
+public:
+    AlsaAudioDriver(std::string device);
+    virtual void AppendSample(double l, double r);
+    virtual void CommitBuffer();
+    virtual int Drain(int timeout);
+    virtual ~AlsaAudioDriver();
+private:
+    snd_pcm_t *pcm_handle;
+    short buffer[2*BUFFER_SIZE];
+    unsigned int buffer_pos = 0;
+};
+
 #endif // ALSA_DRIVER_H

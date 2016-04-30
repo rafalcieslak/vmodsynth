@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2012, 2013 Rafał Cieślak
+    Copyright (C) 2012, 2013, 2016 Rafał Cieślak
 
     This file is part of vModSynth.
 
@@ -40,17 +40,17 @@ v1001::~v1001()
     //dtor
 }
 
-void v1001::dsp(){
+void v1001::dsp_full(AudioContext ctx){
     double amplitude = db2rms(knobs[0]->get_value());
     if(inlets[1]->connection || inlets[2]->connection){
         //stereo mode
         double l = amplitude*inlets[1]->pull_sample()/5.0;//input range is -5 to 5
         double r = amplitude*inlets[2]->pull_sample()/5.0;//input range is -5 to 5
-        AlsaDriver::add_sample(l,r);
+        ctx.audio_driver->AppendSample(l,r);
     }else{
         //mono mode
         double s = amplitude*inlets[0]->pull_sample()/5.0;//input range is -5 to 5
-        AlsaDriver::add_sample(s,s);
+        ctx.audio_driver->AppendSample(s,s);
     }
 }
 
