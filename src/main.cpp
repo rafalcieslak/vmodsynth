@@ -21,36 +21,108 @@
 #include <gtkmm/main.h>
 #include <thread>
 #include <unistd.h>
+#include <iostream>
+#include <getopt.h>
+
 #include "MainWindow.h"
 #include "AlsaDriver.h"
+#include "Engine.h"
 
 MainWindow *mainwindow;
 
 bool quit_threads = false;
 
-char device[100] = "default";
-
-void audio_thread_func(){
+void alsa_audio_thread_func(std::string device){
     AlsaDriver::thread_main(device);
+}
+
+void usage(const char* progname){
+    std::cout <<
+        "Usage: " << progname << " [OPTIONS] [FILENAME]\n"
+        "\n"
+        "Software modular synthesizer that aims to resemble look,\n"
+        "feel and the workflow typical to analog modular synthesizers.\n"
+        " --alsa        Enables ALSA audio driver (this is default).\n"
+        " --pa, --pulseaudio\n"
+        "               Enables PulseAudio audio driver (not yet\n"
+        "               implemented).\n"
+        " -d DEV, --device DEV\n"
+        "               For ALSA driver, sets the output device name.\n"
+        " -h, --help    Displays this text.\n";
 }
 
 int main(int argc, char *argv[]){
 
-    if(argc > 1){
-        strcpy(device,argv[1]);
+    int config_alsa = 0;
+    int config_pa = 0;
+    static struct option long_opts[] =
+        {
+            {"alsa", no_argument, &config_alsa, 1},
+            {"pulseaudio", no_argument, &config_pa, 1},
+            {"pa", no_argument, &config_pa, 1},
+            {"device", no_argument, 0, 'd'},
+            {"help", no_argument, 0, 'h'},
+            {0,0,0,0}
+        };
+
+    std::string config_device = "default";
+
+    int c, opt_index = 0;
+    while((c = getopt_long(argc,argv,"hd:",long_opts,&opt_index)) != -1){
+        switch (c){
+        case 'h':
+            usage(argv[0]);
+            return 0;
+            break;
+        case 'd':
+            config_device = optarg;
+            break;
+        default:
+            std::cout << "Unrecognized option " << (char)c << std::endl;
+            usage(argv[0]);
+            return 1;
+        }
+    }
+
+    std::vector<std::string> config_infiles;
+    while(optind < argc){
+        config_infiles.push_back(argv[optind]);
+        optind++;
+    }
+    if(config_infiles.size() > 1){
+        std::cout << "Unable to open multiple files at once." << std::endl;
+        return 1;
     }
 
     Gtk::Main kit(argc,argv);
 
-    std::thread audio_thread(audio_thread_func);
+    std::thread audio_thread;
 
-    mainwindow = new MainWindow;
+    // Select audio driver to use
+    if(!config_pa && !config_alsa){
+        config_alsa = 1;
+    }
+    if(config_pa && config_alsa){
+        std::cout << "Cannot enable multiple audio drivers at once." << std::endl;
+        return 1;
+    }
+    if(config_pa){
+        std::cout << "ERROR: Pulseaudio driver is not yet implemented." << std::endl;
+        return 1;
+    }else if(config_alsa){
+        audio_thread = std::thread(alsa_audio_thread_func, config_device);
+    }
+
+    MainWindow mainwindow;
+
+    if(config_infiles.size() > 0){
+        // TODO: Open file.
+    }
 
     Gtk::Main::run();
 
     quit_threads = true;
     audio_thread.join();
 
-    delete mainwindow;
     return 0;
 }

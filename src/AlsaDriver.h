@@ -20,9 +20,11 @@
 #ifndef ALSA_DRIVER_H
 #define ALSA_DRIVER_H
 
+#include <string>
+
 namespace AlsaDriver{
 
-void thread_main(char *device);
+void thread_main(std::string device);
 void add_sample(double l, double r);
 
 int get_last_note_pitch(int ch);

@@ -53,7 +53,7 @@ void open_seq(){
 
 }
 
-void open_pcm(char *pcm) {
+void open_pcm(const char *pcm) {
 
     pcm_handle = NULL;
 
@@ -196,9 +196,9 @@ int playback () {
 }
 
 
-void thread_main(char* device){
+void thread_main(std::string device){
 
-    open_pcm(device);
+    open_pcm(device.c_str());
     open_seq();
     if(!pcm_handle || !seq_handle) return;
 
