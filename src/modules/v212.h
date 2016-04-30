@@ -1,8 +1,9 @@
 /*
-    By Robert Gyllenberg 2016 contributing to vModsynt
+    Copyright (C) 2016 Robert Gyllenberg
+
+    extends Module class by Rafał Cieślak 2012, 2013
 
     This file is part of vModSynth.
-    Copyright (C) 2012, 2013 Rafał Cieślak
 
     vModSynth is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

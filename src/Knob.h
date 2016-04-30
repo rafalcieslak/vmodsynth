@@ -53,8 +53,7 @@ class Knob
         unsigned int controller;
         virtual void set_value_from_controller(int v);
 
-        void set_value(double val); //RG 2016
-        int subtype; //added RG2016 for reloading of settings from XML-file
+        void set_value(double val);
 
     protected:
         int x;

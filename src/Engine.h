@@ -1,6 +1,9 @@
 /*
     Copyright (C) 2012, 2013 Rafał Cieślak
 
+    Modified 2016 by Robert Gyllenberg 
+     - implemented file saving and loading procedures.
+
     This file is part of vModSynth.
 
     vModSynth is free software: you can redistribute it and/or modify

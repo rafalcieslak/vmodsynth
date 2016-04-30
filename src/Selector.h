@@ -38,7 +38,7 @@ class Selector : public Knob
 
         double get_value();
 
-        void set_value(double val); //RG2016
+        void set_value(double val);
 
         void set_value_from_controller(int v);
 

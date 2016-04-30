@@ -26,7 +26,6 @@ Selector::Selector(Module *parent, int x, int y, int _vals, int def, bool _hide_
     vals = _vals;
     selector_value = (int)value;
     hide_val = _hide_val;
-    subtype=1; //RG2016 (This is no ordinary Knob, but a Selector object.)
 }
 
 Selector::~Selector()
@@ -49,7 +48,7 @@ double Selector::get_value(){
 
 void Selector::set_value(double val)
 {
-  int v2 = 127*val/2; //How does this really work?
+  int v2 = 127*val/2; 
   set_value_from_controller(v2);
   value=(int)val;
   selector_value=value;  

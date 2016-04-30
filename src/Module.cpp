@@ -62,7 +62,7 @@ Module::Module(const Module&)
     //copy ctor
 }
 
-Inlet* Module::get_inlet_at(int x, int y) //Added RG 2016
+Inlet* Module::get_inlet_at(int x, int y)
 {
     Inlet * result = *(inlets.begin());
     for(auto i = inlets.begin(); i != inlets.end(); i++)
@@ -71,8 +71,20 @@ Inlet* Module::get_inlet_at(int x, int y) //Added RG 2016
     }
     return result;
 }
+
+int Module::get_inlet_n_at(int x, int y)
+{
+    int n=0;
+    Inlet * result = *(inlets.begin());
+    for(auto i = inlets.begin(); i != inlets.end(); i++)
+    {
+       if ((*i)-> x == x && (*i)-> y == y ) return n;
+       n++;
+    }
+    return n;
+}
  
-Outlet* Module::get_outlet_at(int x, int y) //Added RG 2016
+Outlet* Module::get_outlet_at(int x, int y)
 {
    Outlet * result = *(outlets.begin());
    for(auto i = outlets.begin(); i != outlets.end(); i++)
@@ -80,6 +92,18 @@ Outlet* Module::get_outlet_at(int x, int y) //Added RG 2016
       if ((*i)-> x == x && (*i)-> y == y ) return *i;
    }
     return result;
+}
+
+int Module::get_outlet_n_at(int x, int y)
+{
+   Outlet * result = *(outlets.begin());
+   int n=0;
+   for(auto i = outlets.begin(); i != outlets.end(); i++)
+   {
+      if ((*i)-> x == x && (*i)-> y == y ) return n;
+      n++;
+   }
+    return n;
 }
 
 bool Module::is_point_within(double x, double){

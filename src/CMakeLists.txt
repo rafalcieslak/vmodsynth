@@ -9,7 +9,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Xml++ REQUIRED)
 
 add_definitions(
-  --std=c++11
+  --std=c++0x #Wass c++11, Works on Ubuntu 14, but did not run on Ubuntu 13
   )
 
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")

@@ -1,5 +1,7 @@
 /*
-    Copyright (C) 2012, 2013 Rafał Cieślak
+    Copyright (C) 2016 Robert Gyllenberg
+
+    extends Module class by Rafał Cieślak 2012, 2013
 
     This file is part of vModSynth.
 
@@ -24,7 +26,7 @@
 #include "../Module.h"
 
 /*
- * Summing module //2016
+ * Summing module with four inputs and three outputs, gain -12dB
  */
 class v211 : public Module
 {

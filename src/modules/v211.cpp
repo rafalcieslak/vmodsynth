@@ -1,5 +1,7 @@
 /*
-    Copyright (C) 2012, 2013 Rafał Cieślak
+    Copyright (C) 2016 Robert Gyllenberg
+
+    extends Module class by Rafał Cieślak 2012, 2013
 
     This file is part of vModSynth.
 
@@ -43,7 +45,6 @@ v211::~v211()
     //dtor
 }
 
-
 void v211::dsp(){
 
     double in1 = inlets[0]->pull_sample();
@@ -69,7 +70,6 @@ void v211::draw(const Cairo::RefPtr<Cairo::Context>& cr){
     cr->set_line_cap(Cairo::LINE_CAP_ROUND);
 
     draw_text(cr,"IN",10.0, 33,  55);
-
     draw_text(cr,"OUT"  ,10.0, 33,  400);
     draw_text(cr,"-12dB" ,10.0, 33, 412);
 

@@ -57,8 +57,10 @@ class Module
 
         bool highlight;
 
-        Inlet* get_inlet_at(int x, int y);   // Added RG 2016
-        Outlet* get_outlet_at(int x, int y); // Added RG 2016
+        Inlet* get_inlet_at(int x, int y);  
+        Outlet* get_outlet_at(int x, int y);
+        int get_inlet_n_at(int x, int y);  
+        int get_outlet_n_at(int x, int y);
 
     protected:
         void add_inlet(int x, int y);

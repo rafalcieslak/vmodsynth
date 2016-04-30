@@ -1,6 +1,9 @@
 /*
     Copyright (C) 2012, 2013 Rafał Cieślak
 
+    Modified 2016 by Robert Gyllenberg 
+     - added file saving and loading functionality
+
     This file is part of vModSynth.
 
     vModSynth is free software: you can redistribute it and/or modify
@@ -23,8 +26,6 @@
 #include "Engine.h"
 
 MainWindow::MainWindow() :
-                            toolbutton_save(Gtk::Stock::SAVE), //RG2016
-                            toolbutton_load(Gtk::Stock::OPEN), //RG2016
 
                             toolbutton_add(Gtk::Stock::ADD),
                             toolbutton_edit(Gtk::Stock::EDIT),
@@ -33,6 +34,8 @@ MainWindow::MainWindow() :
                             toolbutton_remove(Gtk::Stock::REMOVE),
                             toolbutton_zoomin(Gtk::Stock::ZOOM_IN),
                             toolbutton_zoomout(Gtk::Stock::ZOOM_OUT),
+                            toolbutton_save(Gtk::Stock::SAVE), 
+                            toolbutton_load(Gtk::Stock::OPEN),
                             adding(false)
 {
     set_title("vModSynth");
@@ -42,8 +45,6 @@ MainWindow::MainWindow() :
     main_vbox.pack_start(toolbar,false,false);
     main_vbox.pack_start(cabinet_add_box,true,true);
 
-    toolbar.append(toolbutton_load); //RG2016
-    toolbar.append(toolbutton_save); //RG2016
     toolbar.append(toolbutton_edit);
     toolbar.append(toolbutton_sep);
     toolbar.append(toolbutton_add);
@@ -51,6 +52,8 @@ MainWindow::MainWindow() :
     toolbar.append(toolbutton_right);
     toolbar.append(toolbutton_remove);
     toolbar.append(toolbutton_sep2);
+    toolbar.append(toolbutton_load); 
+    toolbar.append(toolbutton_save); 
     toolbar.append(toolbutton_zoomin);
     toolbar.append(toolbutton_zoomout);
 
@@ -65,8 +68,8 @@ MainWindow::MainWindow() :
     toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
     toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
 
-    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); //RG2016
-    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked)); //RG2016
+    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); 
+    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked));
 
     toolbutton_add.add_accelerator("clicked", accel_group, GDK_KEY_plus, (Gdk::ModifierType) 0, (Gtk::AccelFlags) 0);
     toolbutton_left.add_accelerator("clicked", accel_group, GDK_KEY_Left, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);

@@ -1,9 +1,9 @@
 /*
+    Copyright (C) 2016 Robert Gyllenberg
 
-    By Robert Gyllenberg 2016 contributing to vModsynt
+    extends Module class by Rafał Cieślak 2012, 2013
 
     This file is part of vModSynth.
-    Copyright (C) 2012, 2013 Rafał Cieślak
 
     vModSynth is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,15 +29,15 @@ v212::v212()
     type_id = 212;
     panel_width = 136;
 
-    add_inlet(33, 338);     // 0
+    add_inlet(33, 338);         //In 0
 
-    add_outlet(33 ,85);  //    0
-    add_outlet(103 ,85);  //    0
+    add_outlet(33 ,85);         //Out 0
+    add_outlet(103 ,85);        //Out 1
 
-    add_inlet(103, 338);     // 0
+    add_inlet(103, 338);        //In 1
 
-    add_outlet(33 ,590);  //    0
-    add_outlet(103 ,590);  //    0
+    add_outlet(33 ,590);        //Out 2
+    add_outlet(103 ,590);       //Out 3
 
     add_knob(68,160,-5.0,0.0,5.0);
     add_knob(68,260, 0.0,1.0,5.0);
@@ -84,18 +84,6 @@ void v212::draw(const Cairo::RefPtr<Cairo::Context>& cr){
     cr->set_source_rgb(0.7,0.7,0.7);
     cr->set_line_width(2.5);
     cr->set_line_cap(Cairo::LINE_CAP_ROUND);
-    /*cr->move_to(33,85);
-    cr->line_to(68 ,149);
-    cr->line_to(103,85);
-    cr->stroke();
-    cr->move_to(68 ,149);
-    cr->line_to(68 ,524);
-    cr->stroke();
-    cr->move_to(103,588);
-    cr->line_to(68 ,524);
-    cr->line_to(33 ,588);
-    cr->stroke();
-    */
 
     cr->set_line_width(1.5);
     cr->move_to(33 ,338);
