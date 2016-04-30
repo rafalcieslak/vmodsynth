@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<patch name="traffic_horn" created="Robert Gyllenberg, 2016">
+<patch>
   <modules>
    <module name="Oscillator" type_id="100"/>
    <module name="Oscillator" type_id="100"/>
@@ -11,14 +11,14 @@
    <module name="Audio out" type_id="1001"/>
   </modules>
   <wires>
-    <wire src="4" sx="146" sy="590" dst="5" dx="36" dy="153"/>
-    <wire src="1" sx="89" sy="590" dst="0" dx="146" dy="232"/>
-    <wire src="3" sx="146" sy="590" dst="5" dx="36" dy="85"/>
-    <wire src="5" sx="36" sy="357" dst="6" dx="33" dy="513"/>
-    <wire src="6" sx="33" sy="588" dst="7" dx="68" dy="90"/>
-    <wire src="2" sx="103" sy="588" dst="6" dx="33" dy="438"/>
-    <wire src="1" sx="252" sy="590" dst="2" dx="33" dy="588"/>
-    <wire src="0" sx="200" sy="590" dst="1" dx="146" dy="232"/>
+    <wire src="3" sj="2" dst="5" dj="0"/>
+    <wire src="5" sj="0" dst="6" dj="2"/>
+    <wire src="6" sj="0" dst="7" dj="0"/>
+    <wire src="2" sj="0" dst="6" dj="0"/>
+    <wire src="1" sj="4" dst="2" dj="0"/>
+    <wire src="0" sj="3" dst="1" dj="3"/>
+    <wire src="4" sj="2" dst="5" dj="1"/>
+    <wire src="1" sj="1" dst="0" dj="3"/>
   </wires>
   <knobs>
     <knob n="0" value="-1.52" />
@@ -57,4 +57,3 @@
   <switches>
   </switches>
 </patch>
-

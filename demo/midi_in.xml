@@ -8,11 +8,11 @@
    <module name="Audio out" type_id="1001"/>
   </modules>
   <wires>
-    <wire src="0" sx="103" sy="165" dst="1" dx="33" dy="588"/>
-    <wire src="1" sx="103" sy="588" dst="3" dx="33" dy="438"/>
-    <wire src="3" sx="33" sy="588" dst="4" dx="68" dy="90"/>
-    <wire src="2" sx="146" sy="590" dst="3" dx="33" dy="513"/>
-    <wire src="0" sx="103" sy="90" dst="2" dx="35" dy="232"/>
+    <wire src="1" sj="0" sx="103" sy="588" dst="3" dj="0" dx="33" dy="438"/>
+    <wire src="3" sj="0" sx="33" sy="588" dst="4" dj="0" dx="68" dy="90"/>
+    <wire src="0" sj="3" sx="103" sy="165" dst="1" dj="0" dx="33" dy="588"/>
+    <wire src="2" sj="2" sx="146" sy="590" dst="3" dj="2" dx="33" dy="513"/>
+    <wire src="0" sj="1" sx="103" sy="90" dst="2" dj="1" dx="35" dy="232"/>
   </wires>
   <knobs>
     <knob n="0" value="0" />

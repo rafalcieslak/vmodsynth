@@ -12,18 +12,18 @@
    <module name="Summing" type_id="211"/>
   </modules>
   <wires>
-    <wire src="8" sx="36" sy="450" dst="7" dx="68" dy="90"/>
-    <wire src="3" sx="35" sy="590" dst="2" dx="146" dy="232"/>
-    <wire src="1" sx="33" sy="85" dst="1" dx="103" dy="338"/>
-    <wire src="2" sx="200" sy="590" dst="3" dx="146" dy="232"/>
-    <wire src="5" sx="103" sy="590" dst="6" dx="146" dy="232"/>
-    <wire src="3" sx="252" sy="590" dst="5" dx="103" dy="338"/>
-    <wire src="6" sx="89" sy="590" dst="8" dx="36" dy="153"/>
-    <wire src="1" sx="103" sy="590" dst="8" dx="36" dy="85"/>
-    <wire src="3" sx="200" sy="590" dst="4" dx="35" dy="481"/>
-    <wire src="0" sx="103" sy="170" dst="1" dx="33" dy="338"/>
-    <wire src="5" sx="33" sy="85" dst="6" dx="35" dy="232"/>
-    <wire src="4" sx="89" sy="590" dst="5" dx="33" dy="338"/>
+    <wire src="8" sj="0" dst="7" dj="0"/>
+    <wire src="3" sj="0" dst="2" dj="3"/>
+    <wire src="5" sj="3" dst="6" dj="3"/>
+    <wire src="3" sj="4" dst="5" dj="1"/>
+    <wire src="6" sj="1" dst="8" dj="1"/>
+    <wire src="1" sj="3" dst="8" dj="0"/>
+    <wire src="3" sj="3" dst="4" dj="0"/>
+    <wire src="0" sj="3" dst="1" dj="0"/>
+    <wire src="5" sj="0" sx="33" sy="85" dst="6" dj="1" dx="35" dy="232"/>
+    <wire src="4" sj="1" sx="89" sy="590" dst="5" dj="0" dx="33" dy="338"/>
+    <wire src="1" sj="0" sx="33" sy="85" dst="1" dj="1" dx="103" dy="338"/>
+    <wire src="2" sj="3" sx="200" sy="590" dst="3" dj="3" dx="146" dy="232"/>
   </wires>
   <knobs>
     <knob n="0" value="-0.33" />
