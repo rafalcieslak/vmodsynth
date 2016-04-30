@@ -14,6 +14,11 @@ endif()
 
 message(STATUS "Current build mode: ${CMAKE_BUILD_TYPE}")
 
-
+find_package(PkgConfig REQUIRED)
+find_package(ALSA REQUIRED)
+find_package(Threads REQUIRED)
+pkg_check_modules(GTKMM gtkmm-3.0 REQUIRED)
+pkg_check_modules(CAIROMM cairomm-1.0 REQUIRED)
+pkg_check_modules(LIBXML++ libxml++-2.6 REQUIRED)
 
 add_subdirectory (src)

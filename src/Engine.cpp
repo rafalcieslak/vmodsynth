@@ -24,7 +24,7 @@
 #include <set>
 #include <fstream>
 #include "Selector.h"
-#include "libxml++.h"
+#include <libxml++/libxml++.h>
 
 #include <cstdlib>
 
