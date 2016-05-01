@@ -1,12 +1,3 @@
-find_package(PkgConfig REQUIRED)
-find_package(ALSA REQUIRED)
-find_package(Threads REQUIRED)
-pkg_check_modules(GTKMM gtkmm-3.0 REQUIRED)
-pkg_check_modules(CAIROMM cairomm-1.0 REQUIRED)
-
-#Use the local script (in src/) to find libXml++
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
-find_package(Xml++ REQUIRED)
 
 add_definitions(
   --std=c++0x #Wass c++11, Works on Ubuntu 14, but did not run on Ubuntu 13
@@ -26,14 +17,14 @@ link_directories(
     ${ALSA_LIBRARY_DIRS}
     ${GTKMM_LIBRARY_DIRS}
     ${CAIROMM_LIBRARY_DIRS}
+    ${LIBXML++_LIBRARY_DIRS}
 )
 
-include_directories(
+include_directories( SYSTEM
     ${ALSA_INCLUDE_DIRS}
     ${GTKMM_INCLUDE_DIRS}
     ${CAIROMM_INCLUDE_DIRS}
-    /usr/include/libxml++-2.6/libxml++/ #The automagic does not get this right
-    /usr/lib/libxml++-2.6/include       #dito
+    ${LIBXML++_INCLUDE_DIRS}
 )
 
 # Get the list of all module files
@@ -50,7 +41,7 @@ target_link_libraries( vmodsynth
     ${ALSA_LIBRARIES}
     ${GTKMM_LIBRARIES}
     ${CAIROMM_LIBRARIES}
-    /usr/lib/libxml++-2.6.so #Here we go again...
+    ${LIBXML++_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
 )
 
