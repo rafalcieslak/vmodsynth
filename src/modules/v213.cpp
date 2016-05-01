@@ -33,16 +33,17 @@ v213::v213()
     add_outlet(33 ,85);         //Out 0
     add_outlet(103 ,85);         //Out 1
  
-    add_knob(68,160, 0.0,0.0,5.0); //Offset
-    add_knob(68,280, 0.5,0.0,4.5); //Range
+    add_knob(68,160, 0.0,2.0,5.0); //Offset
+    add_knob(68,280, 0.5,2.0,4.5); //Range
 
     add_selector(68,400,5,1);      //Tonality 5, 7, 12 or linear scale
     //add_knob(68,420, 0.0,1.0,5.0);
-    add_knob(68,520, 1.0,0.0,5.0); //Tempo
+    add_knob(68,520, 1.0,1.0,5.0); //Tempo
 
     //add_switch(68,364);
 
-    cnt_time     =  (int)(55000-(knobs[3]->get_value()*10000));
+    cnt_time     =  50000;
+
     last_voltage =  0.0;
 
     int a[5] = { 0,2,5,7,9 }; //Pentatonical scale
