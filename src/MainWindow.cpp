@@ -105,54 +105,73 @@ MainWindow::MainWindow() :
     row_cat_system[modlist_col.fullname] = "System modules";
 
     Gtk::TreeModel::Row row;
+
+    //System modules
     row = *(modules_treemodel->append(row_cat_system.children()));
     row[modlist_col.id] = 1001;
     row[modlist_col.fullname] = "Audio output";
     row = *(modules_treemodel->append(row_cat_system.children()));
     row[modlist_col.id] = 1005;
     row[modlist_col.fullname] = "MIDI input";
+
+    //Signal sources
     row = *(modules_treemodel->append(row_cat_sources.children()));
     row[modlist_col.id] = 100;
     row[modlist_col.fullname] = "Oscillator";
+
     row = *(modules_treemodel->append(row_cat_sources.children()));
     row[modlist_col.id] = 101;
     row[modlist_col.fullname] = "Noise source";
+
+    row = *(modules_treemodel->append(row_cat_sources.children()));
+    row[modlist_col.id] = 213;
+    row[modlist_col.fullname] = "Random Note";
+
+    //Processing
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 210;
     row[modlist_col.fullname] = "Amplifier";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 230;
     row[modlist_col.fullname] = "ADSR envelope";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 300;
     row[modlist_col.fullname] = "Filter";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 400;
     row[modlist_col.fullname] = "2ch mixer";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 200;
     row[modlist_col.fullname] = "Multiply";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 201;
     row[modlist_col.fullname] = "Panorama/Crossfade";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 203;
     row[modlist_col.fullname] = "Sample and hold";
-    row = *(modules_treemodel->append(row_cat_effects.children()));
 
+    row = *(modules_treemodel->append(row_cat_effects.children()));
     row[modlist_col.id] = 211;
     row[modlist_col.fullname] = "Sum";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 212;
     row[modlist_col.fullname] = "Gain + Offset";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
-
-
     row[modlist_col.id] = 701;
     row[modlist_col.fullname] = "Echo";
+
     row = *(modules_treemodel->append(row_cat_effects.children()));
     row[modlist_col.id] = 703;
     row[modlist_col.fullname] = "Reverb";
+
     row = *(modules_treemodel->append(row_cat_effects.children()));
     row[modlist_col.id] = 702;
     row[modlist_col.fullname] = "Overdrive";

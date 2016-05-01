@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<patch>
+  <modules>
+   <module name="Random Note" type_id="213"/>
+   <module name="Oscillator" type_id="100"/>
+   <module name="Audio out" type_id="1001"/>
+  </modules>
+  <wires>
+    <wire src="1" sj="1" dst="2" dj="0"/>
+    <wire src="0" sj="1" dst="1" dj="1"/>
+  </wires>
+  <knobs>
+    <knob n="0" value="5" />
+    <knob n="1" value="1.672" />
+    <knob n="2" value="1" />
+    <knob n="3" value="4.89" />
+    <knob n="4" value="0" />
+    <knob n="5" value="2" />
+    <knob n="6" value="0" />
+    <knob n="7" value="0.5" />
+    <knob n="8" value="0" />
+    <knob n="9" value="0" />
+    <knob n="10" value="80.65" />
+  </knobs>
+  <switches>
+  </switches>
+</patch>
