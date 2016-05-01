@@ -62,48 +62,26 @@ Module::Module(const Module&)
     //copy ctor
 }
 
-Inlet* Module::get_inlet_at(int x, int y)
-{
-    Inlet * result = *(inlets.begin());
-    for(auto i = inlets.begin(); i != inlets.end(); i++)
-    {
-       if ((*i)-> x == x && (*i)-> y == y ) return *i;
-    }
-    return result;
-}
-
-int Module::get_inlet_n_at(int x, int y)
+int Module::get_inlet_index(Inlet* theInlet)
 {
     int n=0;
-    Inlet * result = *(inlets.begin());
     for(auto i = inlets.begin(); i != inlets.end(); i++)
     {
-       if ((*i)-> x == x && (*i)-> y == y ) return n;
+       if ((*i) == theInlet) return n;
        n++;
     }
     return n;
 }
- 
-Outlet* Module::get_outlet_at(int x, int y)
-{
-   Outlet * result = *(outlets.begin());
-   for(auto i = outlets.begin(); i != outlets.end(); i++)
-   {
-      if ((*i)-> x == x && (*i)-> y == y ) return *i;
-   }
-    return result;
-}
 
-int Module::get_outlet_n_at(int x, int y)
+int Module::get_outlet_index(Outlet* theOutlet)
 {
-   Outlet * result = *(outlets.begin());
    int n=0;
    for(auto i = outlets.begin(); i != outlets.end(); i++)
    {
-      if ((*i)-> x == x && (*i)-> y == y ) return n;
+      if ((*i) == theOutlet) return n;
       n++;
    }
-    return n;
+   return n;
 }
 
 bool Module::is_point_within(double x, double){

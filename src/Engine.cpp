@@ -224,12 +224,10 @@ void register_outlet(Outlet* outlet){
     outlets.insert(outlet);
 }
 void register_knob(Knob* knob){
-    //knobs.insert(knob);
     knobs.push_back(knob);
 }
 void register_switch(Switch* _switch){
-    //switches.insert(_switch);
-    switches.push_back(_switch); //RG2016 adapted for vector vs. set
+    switches.push_back(_switch);
 }
 void unregister_inlet(Inlet* inlet){
     inlets.erase(inlet);
@@ -239,7 +237,6 @@ void unregister_outlet(Outlet* outlet){
 }
 
 void unregister_knob(Knob* knob){
-    //knobs.erase(knob); //RG2016 adapted for vector vs. set
     for(auto i = knobs.begin(); i != knobs.end(); i++)
     {
         if ((*i) ==knob)
@@ -251,7 +248,6 @@ void unregister_knob(Knob* knob){
 }
 
 void unregister_switch(Switch* _switch){
-    //RG2016 adapted for vector vs. set
     for(auto i = switches.begin(); i != switches.end(); i++)
     {
         if ((*i) == _switch)
@@ -263,7 +259,7 @@ void unregister_switch(Switch* _switch){
 
 }
 
- int get_mod_pos(Module* m){ //RG
+int get_mod_pos(Module* m){
      int n=0;
      for(auto i = modules.begin(); i != modules.end(); i++)
      {
@@ -283,7 +279,7 @@ void dump_patch(std::string filename)
     outfile << "<?xml version=\"1.0\"?>\n"; 
     outfile << "<patch>\n";
     outfile << "  <modules>\n";
-    int n=0; int x=0; int y=0;
+    int n=0;
     for(auto i = modules.begin(); i != modules.end(); i++)
     { 
         outfile << "   <module name=\"" << (*i)->name << "\" type_id=\"" << (*i)->type_id << "\"/>\n"; 
@@ -294,14 +290,10 @@ void dump_patch(std::string filename)
     for(auto i = wires.begin(); i != wires.end(); i++)
     { 
         n = get_mod_pos((*i)->from->parent);
-        x = (*i)->from->x;
-        y = (*i)->from->y;
-        int o_n = modules[n]->get_outlet_n_at(x,y); //Logical order of outlet within module (eg. 0,1,2,...)
+        int o_n = (*i)->from->parent->get_outlet_index((*i)->from); //Logical order of outlet within module (eg. 0,1,2,...)
         outfile << "    <wire src=\"" << n << "\" sj=\"" << o_n << "\" ";
         n = get_mod_pos((*i)->to->parent);
-        x = (*i)->to->x;
-        y = (*i)->to->y;
-        int i_n = modules[n]->get_inlet_n_at(x,y); //Logical order of inlet within module (eg. 0,1,2,...)
+        int i_n = (*i)->to->parent->get_inlet_index((*i)->to); //Logical order of inlet within module (eg. 0,1,2,...)
         outfile << "dst=\"" << n << "\" dj=\"" << i_n << "\"/>\n";
     }
     outfile << "  </wires>\n";
