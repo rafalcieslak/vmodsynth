@@ -123,9 +123,6 @@ MainWindow::MainWindow() :
     row[modlist_col.id] = 101;
     row[modlist_col.fullname] = "Noise source";
 
-    row = *(modules_treemodel->append(row_cat_sources.children()));
-    row[modlist_col.id] = 213;
-    row[modlist_col.fullname] = "Random Note";
 
     //Processing
     row = *(modules_treemodel->append(row_cat_signal.children()));
@@ -155,14 +152,6 @@ MainWindow::MainWindow() :
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 203;
     row[modlist_col.fullname] = "Sample and hold";
-
-    row = *(modules_treemodel->append(row_cat_effects.children()));
-    row[modlist_col.id] = 211;
-    row[modlist_col.fullname] = "Sum";
-
-    row = *(modules_treemodel->append(row_cat_signal.children()));
-    row[modlist_col.id] = 212;
-    row[modlist_col.fullname] = "Gain + Offset";
 
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 701;
@@ -255,12 +244,11 @@ void MainWindow::on_zoomout_clicked(){
     Engine::zoom_out();
 }
 
- void MainWindow::on_save_clicked(){ //RG2016
-     //Engine::dump_patch();
+ void MainWindow::on_save_clicked(){
      Engine::save_patch();
  }
  
- void MainWindow::on_load_clicked(){ //RG2016
+ void MainWindow::on_load_clicked(){
      Engine::load_patch();
  }
 

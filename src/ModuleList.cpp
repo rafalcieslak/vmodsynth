@@ -26,9 +26,6 @@
 #include "modules/v201.h"
 #include "modules/v203.h"
 #include "modules/v210.h"
-#include "modules/v211.h"
-#include "modules/v212.h"
-#include "modules/v213.h"
 #include "modules/v230.h"
 #include "modules/v300.h"
 #include "modules/v400.h"
@@ -52,12 +49,6 @@ Module* create_new_module_from_ID(int ID){
             return new v203();
         case V210:
             return new v210();
-        case V211:
-            return new v211();
-        case V212:
-            return new v212();
-        case V213:
-            return new v213();
         case V230:
             return new v230();
         case V300:
