@@ -81,6 +81,7 @@ void v213::dsp(){
         int scale_knob = knobs[2]->get_value();
         octaves = knobs[1]->get_value();
 
+        scale = 0;
         switch(scale_knob)
         {
             case 0:
@@ -108,7 +109,7 @@ void v213::dsp(){
                 break;
         }
 
-
+        voltage = 0.0;
         switch(scale)
         {
             case 1:

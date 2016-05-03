@@ -339,7 +339,7 @@ void save_patch() //Actually save XML-data to an external file
         GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
         NULL);
     gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
-    //gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
+    gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
     gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "untitled.xml");
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
@@ -357,7 +357,7 @@ void parcefile(std::string filepath)
  parser.parse_file(filepath);
  const xmlpp::Node* rootNode = parser.get_document()->get_root_node();
  xmlpp::Node::NodeList mainList = rootNode->get_children();
- char origLocale[30];
+ char origLocale[1024];
  strcpy(origLocale, std::setlocale(LC_ALL, "")); //Store locale before changing
  std::setlocale(LC_ALL, "C"); // We use '.' as decimal-point separator
  for(xmlpp::Node::NodeList::iterator iter = mainList.begin(); iter != mainList.end(); ++iter)
@@ -459,7 +459,7 @@ void load_patch() //Choose file to load
         GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
         NULL);
 
-    //gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
+    gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), ""); //Default directory
     gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "*.xml");
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
