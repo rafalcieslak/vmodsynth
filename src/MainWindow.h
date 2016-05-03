@@ -55,8 +55,6 @@ class MainWindow : public Gtk::Window
         Glib::RefPtr<Gtk::TreeStore> modules_treemodel;
         Gtk::TreeView modules_list;
 
-        Gtk::ToolButton toolbutton_save;
-        Gtk::ToolButton toolbutton_load;
 
         Gtk::ToolButton toolbutton_add;
         Gtk::ToggleToolButton toolbutton_edit;
@@ -67,9 +65,9 @@ class MainWindow : public Gtk::Window
         Gtk::SeparatorToolItem toolbutton_sep2;
         Gtk::ToolButton toolbutton_zoomin;
         Gtk::ToolButton toolbutton_zoomout;
+        Gtk::ToolButton toolbutton_save;
+        Gtk::ToolButton toolbutton_load;
 
-        void on_save_clicked();
-        void on_load_clicked();
 
 
         bool on_delete_event(GdkEventAny* event);
@@ -79,6 +77,8 @@ class MainWindow : public Gtk::Window
         void on_left_clicked();
         void on_right_clicked();
         void on_remove_clicked();
+        void on_load_clicked();
+        void on_save_clicked();
         void on_zoomin_clicked();
         void on_zoomout_clicked();
         bool adding;

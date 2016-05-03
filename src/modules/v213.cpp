@@ -67,12 +67,11 @@ double v213::fRand(double fMin, double fMax)
 }
 
 void v213::dsp(){
-    double offset, octaves, tempo, voltage, out;
-    int note, semitone, scale, range;
+    double offset, octaves, voltage, out = 0.0;
+    int note, semitone, scale, range = 0;
 
     offset   = knobs[0]->get_value();
     octaves  = knobs[1]->get_value();
-    tempo    = knobs[2]->get_value();
 
     cnt_time--;
     if(cnt_time==0)

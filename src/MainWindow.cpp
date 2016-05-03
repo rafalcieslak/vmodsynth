@@ -65,11 +65,11 @@ MainWindow::MainWindow() :
     toolbutton_left.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_left_clicked));
     toolbutton_right.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_right_clicked));
     toolbutton_remove.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_remove_clicked));
+    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked));
+    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); 
     toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
     toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
 
-    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); 
-    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked));
 
     toolbutton_add.add_accelerator("clicked", accel_group, GDK_KEY_plus, (Gdk::ModifierType) 0, (Gtk::AccelFlags) 0);
     toolbutton_left.add_accelerator("clicked", accel_group, GDK_KEY_Left, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
