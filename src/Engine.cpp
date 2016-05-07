@@ -25,6 +25,7 @@
 #include <fstream>
 #include "Selector.h"
 #include <libxml++/libxml++.h>
+#include <libxml/tree.h>
 
 #include <cstdlib>
 
@@ -274,57 +275,88 @@ int get_mod_pos(Module* m){
 void dump_patch(std::string filename) 
 //Dumps XML-data to a file
 {
-    std::ofstream outfile;
-    outfile.open (filename);
-    outfile << "<?xml version=\"1.0\"?>\n"; 
-    outfile << "<patch>\n";
-    outfile << "  <modules>\n";
+    xmlDocPtr doc = NULL;       /* document pointer */
+    xmlNodePtr root_node = NULL, node = NULL, node1 = NULL;/* node pointers */
+    xmlDtdPtr dtd = NULL;       /* DTD pointer */
+
+    xmlNodePtr some_section = NULL;
+    xmlNodePtr some_entry   = NULL;
+    xmlIndentTreeOutput = 1;
+  
+    char buff[256];
+    //int i, j;
+
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    root_node = xmlNewNode(NULL, BAD_CAST "patch");
+    xmlDocSetRootElement(doc, root_node);
+
+    char origLocale[1024];
+    strcpy(origLocale, std::setlocale(LC_ALL, "")); //Store locale before changing
+    std::setlocale(LC_ALL, "C"); // We use '.' as decimal-point separator
+
+    some_section = xmlNewChild(root_node, NULL, BAD_CAST "modules", BAD_CAST "");
     int n=0;
     for(auto i = modules.begin(); i != modules.end(); i++)
     { 
-        outfile << "   <module name=\"" << (*i)->name << "\" type_id=\"" << (*i)->type_id << "\"/>\n"; 
+        some_entry = xmlNewChild(some_section, NULL, BAD_CAST "module",BAD_CAST "");
+        xmlNewProp(some_entry, BAD_CAST "name", BAD_CAST((*i)->name.c_str()));
         //Module name is not used, but output for human readability of the file. 
+        xmlNewProp(some_entry, BAD_CAST "type_id", BAD_CAST(std::to_string((*i)->type_id).c_str()));
     }
-    outfile << "  </modules>\n";
-    outfile << "  <wires>\n";
+
+    some_section = xmlNewChild(root_node, NULL, BAD_CAST "wires", BAD_CAST "");
+
     for(auto i = wires.begin(); i != wires.end(); i++)
     { 
+        some_entry = xmlNewChild(some_section, NULL, BAD_CAST "wire",BAD_CAST " ");
+
         n = get_mod_pos((*i)->from->parent);
         int o_n = (*i)->from->parent->get_outlet_index((*i)->from); //Logical order of outlet within module (eg. 0,1,2,...)
-        outfile << "    <wire src=\"" << n << "\" sj=\"" << o_n << "\" ";
+
+        xmlNewProp(some_entry, BAD_CAST "src", BAD_CAST(std::to_string(n).c_str()));
+        xmlNewProp(some_entry, BAD_CAST "sj", BAD_CAST(std::to_string(o_n).c_str()));
+
         n = get_mod_pos((*i)->to->parent);
         int i_n = (*i)->to->parent->get_inlet_index((*i)->to); //Logical order of inlet within module (eg. 0,1,2,...)
-        outfile << "dst=\"" << n << "\" dj=\"" << i_n << "\"/>\n";
+        xmlNewProp(some_entry, BAD_CAST "dst", BAD_CAST(std::to_string(n).c_str()));
+        xmlNewProp(some_entry, BAD_CAST "dj", BAD_CAST(std::to_string(i_n).c_str()));
     }
-    outfile << "  </wires>\n";
-    outfile << "  <knobs>\n";
-    n=0;
  
+    n=0;
     //start outputting knob-settings on a per-module basis
+    some_section = xmlNewChild(root_node, NULL, BAD_CAST "knobs", BAD_CAST "");
+
     for(auto m = modules.begin(); m != modules.end(); m++)
     { 
         for(auto i = (*m)->knobs.begin(); i != (*m)->knobs.end(); i++)
         { 
             double value = (*i)->get_value();
-            outfile << "    <knob n=\"" << n << "\" value=\"" << value << "\" />\n";
+            some_entry = xmlNewChild(some_section, NULL, BAD_CAST "knob",BAD_CAST " ");
+            xmlNewProp(some_entry, BAD_CAST "n", BAD_CAST(std::to_string(n).c_str()));
+            xmlNewProp(some_entry, BAD_CAST "value", BAD_CAST(std::to_string(value).c_str()));
             n++; //Increment knob counter
         }
     }
-    outfile << "  </knobs>\n";
-    outfile << "  <switches>\n";
+
     n=0;
+    some_section = xmlNewChild(root_node, NULL, BAD_CAST "switches", BAD_CAST "");
     for(auto m = modules.begin(); m != modules.end(); m++)
     { 
         for(auto i = (*m)->switches.begin(); i != (*m)->switches.end(); i++)
         { 
             double value = (*i)->get_value();
-            outfile << "  <switch n=\"" << n << "\" value=\"" << value << "\" />\n";
+            some_entry = xmlNewChild(some_section, NULL, BAD_CAST "switch",BAD_CAST " ");
+            xmlNewProp(some_entry, BAD_CAST "n", BAD_CAST(std::to_string(n).c_str()));
+            xmlNewProp(some_entry, BAD_CAST "value", BAD_CAST(std::to_string(value).c_str()));
             n++; //Increment knob counter
         }
     }
-    outfile << "  </switches>\n";
-    outfile << "</patch>\n";
-    outfile.close();
+
+    xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
+    xmlFreeDoc(doc);
+    xmlCleanupParser();
+
+    std::setlocale(LC_ALL, origLocale); //Restore locale to the original state
 }
 
 void save_patch() //Actually save XML-data to an external file
