@@ -279,36 +279,64 @@ void dump_patch(std::string filename)
     xmlNodePtr root_node = NULL, node = NULL, node1 = NULL;/* node pointers */
     xmlDtdPtr dtd = NULL;       /* DTD pointer */
 
-    xmlNodePtr some_section = NULL;
-    xmlNodePtr some_entry   = NULL;
+    xmlNodePtr some_section     = NULL;
+    xmlNodePtr some_entry       = NULL;
+    xmlNodePtr module_entry     = NULL;
+    xmlNodePtr module_section   = NULL;
     xmlIndentTreeOutput = 1;
   
     char buff[256];
-    //int i, j;
 
     doc = xmlNewDoc(BAD_CAST "1.0");
     root_node = xmlNewNode(NULL, BAD_CAST "patch");
     xmlDocSetRootElement(doc, root_node);
+    xmlNewProp(root_node, BAD_CAST "vmodsynth_version", BAD_CAST "1.1");
 
     char origLocale[1024];
     strcpy(origLocale, std::setlocale(LC_ALL, "")); //Store locale before changing
     std::setlocale(LC_ALL, "C"); // We use '.' as decimal-point separator
 
     some_section = xmlNewChild(root_node, NULL, BAD_CAST "modules", BAD_CAST "");
-    int n=0;
-    for(auto i = modules.begin(); i != modules.end(); i++)
-    { 
-        some_entry = xmlNewChild(some_section, NULL, BAD_CAST "module",BAD_CAST "");
-        xmlNewProp(some_entry, BAD_CAST "name", BAD_CAST((*i)->name.c_str()));
-        //Module name is not used, but output for human readability of the file. 
-        xmlNewProp(some_entry, BAD_CAST "type_id", BAD_CAST(std::to_string((*i)->type_id).c_str()));
-    }
 
+    int m_pos=0, n=0;
+    //Iterate over modules
+    for(auto m = modules.begin(); m != modules.end(); m++)
+    { 
+        module_entry = xmlNewChild(some_section, NULL, BAD_CAST "module",BAD_CAST "");
+        xmlNewProp(module_entry, BAD_CAST "name", BAD_CAST((*m)->name.c_str()));
+        //Module name is not used, but output for human readability of the file. 
+        xmlNewProp(module_entry, BAD_CAST "type_id", BAD_CAST(std::to_string((*m)->type_id).c_str()));
+
+        n=0;
+        //knob-settings per module
+        for(auto i = (*m)->knobs.begin(); i != (*m)->knobs.end(); i++)
+        { 
+            double value = (*i)->get_value();
+            some_entry = xmlNewChild(module_entry, NULL, BAD_CAST "knob",BAD_CAST "");
+            xmlNewProp(some_entry, BAD_CAST "n", BAD_CAST(std::to_string(n).c_str()));
+            xmlNewProp(some_entry, BAD_CAST "value", BAD_CAST(std::to_string(value).c_str()));
+            n++; //Increment knob counter
+        } //End knobs
+ 
+        n=0;
+        //swtich-settings per module
+        for(auto i = (*m)->switches.begin(); i != (*m)->switches.end(); i++)
+        { 
+            double value = (*i)->get_value();
+            some_entry = xmlNewChild(module_entry, NULL, BAD_CAST "switch",BAD_CAST "");
+            xmlNewProp(some_entry, BAD_CAST "n", BAD_CAST(std::to_string(n).c_str()));
+            xmlNewProp(some_entry, BAD_CAST "value", BAD_CAST(std::to_string(value).c_str()));
+            n++; //Increment knob counter
+        }
+ 
+
+   } //End modules
+ 
     some_section = xmlNewChild(root_node, NULL, BAD_CAST "wires", BAD_CAST "");
 
     for(auto i = wires.begin(); i != wires.end(); i++)
     { 
-        some_entry = xmlNewChild(some_section, NULL, BAD_CAST "wire",BAD_CAST " ");
+        some_entry = xmlNewChild(some_section, NULL, BAD_CAST "wire",BAD_CAST "");
 
         n = get_mod_pos((*i)->from->parent);
         int o_n = (*i)->from->parent->get_outlet_index((*i)->from); //Logical order of outlet within module (eg. 0,1,2,...)
@@ -320,36 +348,6 @@ void dump_patch(std::string filename)
         int i_n = (*i)->to->parent->get_inlet_index((*i)->to); //Logical order of inlet within module (eg. 0,1,2,...)
         xmlNewProp(some_entry, BAD_CAST "dst", BAD_CAST(std::to_string(n).c_str()));
         xmlNewProp(some_entry, BAD_CAST "dj", BAD_CAST(std::to_string(i_n).c_str()));
-    }
- 
-    n=0;
-    //start outputting knob-settings on a per-module basis
-    some_section = xmlNewChild(root_node, NULL, BAD_CAST "knobs", BAD_CAST "");
-
-    for(auto m = modules.begin(); m != modules.end(); m++)
-    { 
-        for(auto i = (*m)->knobs.begin(); i != (*m)->knobs.end(); i++)
-        { 
-            double value = (*i)->get_value();
-            some_entry = xmlNewChild(some_section, NULL, BAD_CAST "knob",BAD_CAST " ");
-            xmlNewProp(some_entry, BAD_CAST "n", BAD_CAST(std::to_string(n).c_str()));
-            xmlNewProp(some_entry, BAD_CAST "value", BAD_CAST(std::to_string(value).c_str()));
-            n++; //Increment knob counter
-        }
-    }
-
-    n=0;
-    some_section = xmlNewChild(root_node, NULL, BAD_CAST "switches", BAD_CAST "");
-    for(auto m = modules.begin(); m != modules.end(); m++)
-    { 
-        for(auto i = (*m)->switches.begin(); i != (*m)->switches.end(); i++)
-        { 
-            double value = (*i)->get_value();
-            some_entry = xmlNewChild(some_section, NULL, BAD_CAST "switch",BAD_CAST " ");
-            xmlNewProp(some_entry, BAD_CAST "n", BAD_CAST(std::to_string(n).c_str()));
-            xmlNewProp(some_entry, BAD_CAST "value", BAD_CAST(std::to_string(value).c_str()));
-            n++; //Increment knob counter
-        }
     }
 
     xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
@@ -392,6 +390,8 @@ void parcefile(std::string filepath)
  char origLocale[1024];
  strcpy(origLocale, std::setlocale(LC_ALL, "")); //Store locale before changing
  std::setlocale(LC_ALL, "C"); // We use '.' as decimal-point separator
+
+ int m_pos=-1; //For keeping track on the current module position
  for(xmlpp::Node::NodeList::iterator iter = mainList.begin(); iter != mainList.end(); ++iter)
  {
      std::string contName= (*iter)->get_name();
@@ -402,12 +402,51 @@ void parcefile(std::string filepath)
          {
              std::string nodeType=(*modIter)->get_name();
              if(nodeType=="module")
-             {
+             {             
+                  m_pos++; //First occurence will be 0, second 1 etc...
                   const xmlpp::Element* element1 = dynamic_cast<const xmlpp::Element*>(*modIter);
                   std::string moduleName = element1->get_attribute_value("name"); //Not actually used here
                   std::string moduleId   = element1->get_attribute_value("type_id");
                   int module_type_id = std::stoi(moduleId); 
-                  create_and_append_module(module_type_id);
+
+                  create_and_append_module(module_type_id); //Append module to rack
+                  Module* current_module = modules[m_pos];
+
+                  //Check for aggregated knob, switch etc. data within module entry:
+                  xmlpp::Element::NodeList moduleDataList = (*modIter)->get_children();
+                  for(xmlpp::Element::NodeList::iterator modDataIter = moduleDataList.begin(); modDataIter != moduleDataList.end(); ++modDataIter)
+                  {
+                      std::string nodeDataType=(*modDataIter)->get_name();
+                      if(nodeDataType=="knob")
+                      {
+                          const xmlpp::Element* element2m = dynamic_cast<const xmlpp::Element*>(*modDataIter);
+                          int    knob_n = std::stoi(element2m->get_attribute_value("n"));
+                          double value  = std::stof(element2m->get_attribute_value("value"));
+                          //std::cerr << "Module:" << m_pos << "Knob#" << knob_n << "value:" << value <<"\n"; 
+                          
+                          if((dynamic_cast<Selector*>(current_module->knobs[knob_n])))
+                          {
+                              //This Knob is, in fact a Selector object, treat differently 
+                              Selector* someSelector = (Selector*)current_module->knobs[knob_n]; 
+                              someSelector->set_value(value);
+                              //std::cerr << "Is selector\n";
+                          }
+                          else
+                          {
+                               //Treat as basic Knob object
+                               current_module->knobs[knob_n]->set_value(value); 
+                               //std::cerr << "Is knob\n";
+                          }
+                      }
+                      if(nodeDataType=="switch")
+                      {
+                          const xmlpp::Element* element3m = dynamic_cast<const xmlpp::Element*>(*modDataIter);
+                          int    switch_n = std::stoi(element3m->get_attribute_value("n"));
+                          double value = std::stof(element3m->get_attribute_value("value"));
+                          Switch* theSwitch = current_module->switches[switch_n];
+                          theSwitch->set_value(value);
+                      }
+                  }
              }
          }
      }
