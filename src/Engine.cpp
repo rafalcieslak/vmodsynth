@@ -109,6 +109,11 @@ void move_selected_module_right(){
     swap_modules(pos,pos2);
 }
 
+void clear_rack() {
+    while(modules.size()>0)
+        remove_module(*modules.begin());
+}
+
 // ===== DSP CALCULATIONS =====
 
 /*
@@ -520,6 +525,8 @@ void parcefile(std::string filepath)
 
 void load_patch() //Choose file to load 
 {
+    clear_rack(); //Clear rack before populating again
+
     GtkWidget *dialog;
     std::string filename;
     dialog = gtk_file_chooser_dialog_new (

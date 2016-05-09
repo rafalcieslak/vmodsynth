@@ -51,6 +51,7 @@ extern std::vector<Switch* > switches;extern std::set<Wire* > wires;
 extern Module* selected_module;
 #endif
 
+void clear_rack(); //Removes all modules
 void dump_patch(std::string);
 void parse_file(std::string);
 void save_patch();
