@@ -61,6 +61,12 @@ double Knob::get_value(){
     return value;
 }
 
+void Knob::set_value(double val)
+{
+ value = val;
+ redraw_me(); 
+}
+
 void Knob::movement_start(){
     //std::cout << "Knob movement started.\n";
     movement_value = value;

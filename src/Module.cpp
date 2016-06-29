@@ -62,6 +62,28 @@ Module::Module(const Module&)
     //copy ctor
 }
 
+int Module::get_inlet_index(Inlet* theInlet)
+{
+    int n=0;
+    for(auto i = inlets.begin(); i != inlets.end(); i++)
+    {
+       if ((*i) == theInlet) return n;
+       n++;
+    }
+    return n;
+}
+
+int Module::get_outlet_index(Outlet* theOutlet)
+{
+   int n=0;
+   for(auto i = outlets.begin(); i != outlets.end(); i++)
+   {
+      if ((*i) == theOutlet) return n;
+      n++;
+   }
+   return n;
+}
+
 bool Module::is_point_within(double x, double){
     return (x >= xoffset && x <= xoffset + panel_width);
 }

@@ -53,6 +53,8 @@ class Knob
         unsigned int controller;
         virtual void set_value_from_controller(int v);
 
+        void set_value(double val);
+
     protected:
         int x;
         int y;

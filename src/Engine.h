@@ -1,6 +1,9 @@
 /*
     Copyright (C) 2012, 2013 Rafał Cieślak
 
+    Modified 2016 by Robert Gyllenberg 
+     - implemented file saving and loading procedures.
+
     This file is part of vModSynth.
 
     vModSynth is free software: you can redistribute it and/or modify
@@ -35,19 +38,24 @@ namespace Engine{
 std::vector<Module* > modules;
 std::set<Inlet* > inlets;
 std::set<Outlet* > outlets;
-std::set<Knob* > knobs;
-std::set<Switch* > switches;
+std::vector<Knob* > knobs;
+std::vector<Switch* > switches;
 std::set<Wire* > wires;
 #else
 extern std::vector<Module* > modules;
 extern std::set<Inlet* > inlets;
-extern std::set<Outlet* > outlets;
-extern std::set<Knob* > knobs;
-extern std::set<Switch* > switches;
-extern std::set<Wire* > wires;
+extern std::set<Outlet* > outlets; 	
+extern std::vector<Knob* > knobs;
+extern std::vector<Switch* > switches;extern std::set<Wire* > wires;
 
 extern Module* selected_module;
 #endif
+
+void clear_rack(); //Removes all modules
+void dump_patch(std::string);
+void parse_file(std::string);
+void save_patch();
+void load_patch();
 
 void create_and_append_module(int ID);
 void remove_module(Module* m);
@@ -83,6 +91,4 @@ void unregister_knob(Knob* knob);
 void unregister_switch(Switch* _switch);
 
 } //namespace Engine
-
-
 #endif // ENGINE_H

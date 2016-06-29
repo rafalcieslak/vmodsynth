@@ -1,12 +1,6 @@
 
-find_package(PkgConfig REQUIRED)
-find_package(ALSA REQUIRED)
-find_package(Threads REQUIRED)
-pkg_check_modules(GTKMM gtkmm-3.0 REQUIRED)
-pkg_check_modules(CAIROMM cairomm-1.0 REQUIRED)
-
 add_definitions(
-  --std=c++11
+  --std=c++0x #Wass c++11, Works on Ubuntu 14, but did not run on Ubuntu 13
   )
 
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
@@ -23,12 +17,14 @@ link_directories(
     ${ALSA_LIBRARY_DIRS}
     ${GTKMM_LIBRARY_DIRS}
     ${CAIROMM_LIBRARY_DIRS}
+    ${LIBXML++_LIBRARY_DIRS}
 )
 
-include_directories(
+include_directories( SYSTEM
     ${ALSA_INCLUDE_DIRS}
     ${GTKMM_INCLUDE_DIRS}
     ${CAIROMM_INCLUDE_DIRS}
+    ${LIBXML++_INCLUDE_DIRS}
 )
 
 # Get the list of all module files
@@ -45,7 +41,8 @@ target_link_libraries( vmodsynth
     ${ALSA_LIBRARIES}
     ${GTKMM_LIBRARIES}
     ${CAIROMM_LIBRARIES}
-	${CMAKE_THREAD_LIBS_INIT}
+    ${LIBXML++_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
 )
 
 add_custom_command(

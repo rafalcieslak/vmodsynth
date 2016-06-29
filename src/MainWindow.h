@@ -1,6 +1,9 @@
 /*
     Copyright (C) 2012, 2013 Rafał Cieślak
 
+    Modified 2016 by Robert Gyllenberg 
+     - added file saving and loading functionality
+
     This file is part of vModSynth.
 
     vModSynth is free software: you can redistribute it and/or modify
@@ -52,6 +55,7 @@ class MainWindow : public Gtk::Window
         Glib::RefPtr<Gtk::TreeStore> modules_treemodel;
         Gtk::TreeView modules_list;
 
+
         Gtk::ToolButton toolbutton_add;
         Gtk::ToggleToolButton toolbutton_edit;
         Gtk::SeparatorToolItem toolbutton_sep;
@@ -61,6 +65,10 @@ class MainWindow : public Gtk::Window
         Gtk::SeparatorToolItem toolbutton_sep2;
         Gtk::ToolButton toolbutton_zoomin;
         Gtk::ToolButton toolbutton_zoomout;
+        Gtk::ToolButton toolbutton_save;
+        Gtk::ToolButton toolbutton_load;
+
+
 
         bool on_delete_event(GdkEventAny* event);
 
@@ -69,6 +77,8 @@ class MainWindow : public Gtk::Window
         void on_left_clicked();
         void on_right_clicked();
         void on_remove_clicked();
+        void on_load_clicked();
+        void on_save_clicked();
         void on_zoomin_clicked();
         void on_zoomout_clicked();
         bool adding;

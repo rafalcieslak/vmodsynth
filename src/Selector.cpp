@@ -46,6 +46,14 @@ double Selector::get_value(){
     return (double)selector_value;
 }
 
+void Selector::set_value(double val)
+{
+  int v2 = 127*val/2; 
+  set_value_from_controller(v2);
+  value=(int)val;
+  selector_value=value;  
+}
+
 void Selector::draw(const Cairo::RefPtr<Cairo::Context>& cr){
 
 

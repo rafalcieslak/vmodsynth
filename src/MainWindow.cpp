@@ -1,6 +1,9 @@
 /*
     Copyright (C) 2012, 2013 Rafał Cieślak
 
+    Modified 2016 by Robert Gyllenberg 
+     - added file saving and loading functionality
+
     This file is part of vModSynth.
 
     vModSynth is free software: you can redistribute it and/or modify
@@ -23,6 +26,7 @@
 #include "Engine.h"
 
 MainWindow::MainWindow() :
+
                             toolbutton_add(Gtk::Stock::ADD),
                             toolbutton_edit(Gtk::Stock::EDIT),
                             toolbutton_left(Gtk::Stock::GO_BACK),
@@ -30,6 +34,8 @@ MainWindow::MainWindow() :
                             toolbutton_remove(Gtk::Stock::REMOVE),
                             toolbutton_zoomin(Gtk::Stock::ZOOM_IN),
                             toolbutton_zoomout(Gtk::Stock::ZOOM_OUT),
+                            toolbutton_save(Gtk::Stock::SAVE), 
+                            toolbutton_load(Gtk::Stock::OPEN),
                             adding(false)
 {
     set_title("vModSynth");
@@ -46,6 +52,8 @@ MainWindow::MainWindow() :
     toolbar.append(toolbutton_right);
     toolbar.append(toolbutton_remove);
     toolbar.append(toolbutton_sep2);
+    toolbar.append(toolbutton_load); 
+    toolbar.append(toolbutton_save); 
     toolbar.append(toolbutton_zoomin);
     toolbar.append(toolbutton_zoomout);
 
@@ -57,8 +65,11 @@ MainWindow::MainWindow() :
     toolbutton_left.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_left_clicked));
     toolbutton_right.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_right_clicked));
     toolbutton_remove.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_remove_clicked));
+    toolbutton_load.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_load_clicked));
+    toolbutton_save.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_save_clicked)); 
     toolbutton_zoomin.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomin_clicked));
     toolbutton_zoomout.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::on_zoomout_clicked));
+
 
     toolbutton_add.add_accelerator("clicked", accel_group, GDK_KEY_plus, (Gdk::ModifierType) 0, (Gtk::AccelFlags) 0);
     toolbutton_left.add_accelerator("clicked", accel_group, GDK_KEY_Left, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
@@ -94,45 +105,62 @@ MainWindow::MainWindow() :
     row_cat_system[modlist_col.fullname] = "System modules";
 
     Gtk::TreeModel::Row row;
+
+    //System modules
     row = *(modules_treemodel->append(row_cat_system.children()));
     row[modlist_col.id] = 1001;
     row[modlist_col.fullname] = "Audio output";
     row = *(modules_treemodel->append(row_cat_system.children()));
     row[modlist_col.id] = 1005;
     row[modlist_col.fullname] = "MIDI input";
+
+    //Signal sources
     row = *(modules_treemodel->append(row_cat_sources.children()));
     row[modlist_col.id] = 100;
     row[modlist_col.fullname] = "Oscillator";
+
     row = *(modules_treemodel->append(row_cat_sources.children()));
     row[modlist_col.id] = 101;
     row[modlist_col.fullname] = "Noise source";
+
+
+    //Processing
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 210;
     row[modlist_col.fullname] = "Amplifier";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 230;
     row[modlist_col.fullname] = "ADSR envelope";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 300;
     row[modlist_col.fullname] = "Filter";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 400;
     row[modlist_col.fullname] = "2ch mixer";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 200;
     row[modlist_col.fullname] = "Multiply";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 201;
     row[modlist_col.fullname] = "Panorama/Crossfade";
+
     row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 203;
     row[modlist_col.fullname] = "Sample and hold";
-    row = *(modules_treemodel->append(row_cat_effects.children()));
+
+    row = *(modules_treemodel->append(row_cat_signal.children()));
     row[modlist_col.id] = 701;
     row[modlist_col.fullname] = "Echo";
+
     row = *(modules_treemodel->append(row_cat_effects.children()));
     row[modlist_col.id] = 703;
     row[modlist_col.fullname] = "Reverb";
+
     row = *(modules_treemodel->append(row_cat_effects.children()));
     row[modlist_col.id] = 702;
     row[modlist_col.fullname] = "Overdrive";
@@ -215,6 +243,14 @@ void MainWindow::on_zoomin_clicked(){
 void MainWindow::on_zoomout_clicked(){
     Engine::zoom_out();
 }
+
+ void MainWindow::on_save_clicked(){
+     Engine::save_patch();
+ }
+ 
+ void MainWindow::on_load_clicked(){
+     Engine::load_patch();
+ }
 
 
 void MainWindow::on_modlist_item_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*){
